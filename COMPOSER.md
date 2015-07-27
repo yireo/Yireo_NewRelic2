@@ -1,39 +1,36 @@
 # Instructions for using composer
 
-Use composer to install this extension. First make sure to initialize composer with the right settings:
+Use composer to install this extension. First make sure that Magento is installed
+via composer, and that there is a valid `composer.json` file present.
 
-    composer -n init
-    composer install --no-dev
-
-Next, modify your local composer.json file:
+Next, modify the Magento 2 `composer.json` file to add the Yireo Satis repository
+to it:
 
     {
-        "require": {
-            "yireo/yireo_newrelic2": "dev-master",
-            "magento-hackathon/magento-composer-installer": "*"
-        },    
-        "repositories":[
-            {
-                "packagist": false
+        ...
+        "repositories": {
+            "magento": {
+                "type": "composer",
+                "url": "http://packages.magento.com"
             },
-            {
-                "type":"composer",
-                "url":"http://packages.firegento.com"
-            },
-            {
+            "yireo": {
                 "type":"composer",
                 "url":"http://satis.yireo.com"
             }
-        ],
-        "extra":{
-            "magento-root-dir":"/path/to/magento",
-            "magento-deploystrategy":"copy"           
         }
     }
 
-Make sure to set the `magento-root-dir` properly. Test this by running:
+Next, install our module using the following command:
 
-    composer update --no-dev
+    composer require yireo/yireo_newrelic2
+
+Next, install the new module into Magento itself:
+
+    ./bin/magento module:enable Yireo_NewRelic2
+    ./bin/magento setup:upgrade
+
+Check whether the module is succesfully installed in **Admin > Stores >
+Configuration > Advanced > Advanced**.
 
 Done.
 

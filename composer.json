@@ -12,23 +12,17 @@
         }
     ],
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
     "require-dev":{
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "http://packages.firegento.com"
-        }
-    ],
     "extra":{
         "map": [
             [
                 "source/*",
-                "Yireo/NewRelic"
+                "Yireo/NewRelic2"
             ]
         ]
     }
