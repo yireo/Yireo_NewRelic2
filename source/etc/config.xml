@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Magento/Store/etc/config.xsd">
+    <default>
+        <newrelic2>
+            <settings>
+                <enabled>1</enabled>
+                <track_controller>1</track_controller>
+                <real_user_monitoring>0</real_user_monitoring>
+                <xmit>1</xmit>
+            </settings>
+        </newrelic2>
+    </default>
+</config>

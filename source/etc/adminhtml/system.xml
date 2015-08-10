@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NewRelic plugin for Magento 2
+ *
+ * @package     Yireo_NewRelic2
+ * @author      Yireo
+ * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
+ * @license     Simplified BSD License
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Config/etc/system_file.xsd">
+    <system>
+        <section id="newrelic2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>New Relic</label>
+            <tab>advanced</tab>
+                <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Settings</label>
+                        <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Enable</label>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                        </field>
+                        <field id="appname" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Application Name</label>
+                            <comment><![CDATA[Appears in New Relic application-overview]]></comment>
+                            <depends>
+                                <field id="enable">1</field>
+                            </depends>
+                        </field>
+                        <field id="license" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>License Key</label>
+                            <comment><![CDATA[Override of New Relic license-key]]></comment>
+                            <depends>
+                                <field id="enable">1</field>
+                            </depends>
+                        </field>
+                        <field id="xmit" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Use xmit</label>
+                            <comment><![CDATA[Use xmit on 'newrelic_set_appname<br/>
+Warning: This gives a slight performance overhead - check the NewRelic docs for details]]></comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <depends>
+                                <field id="enable">1</field>
+                            </depends>
+                        </field>
+                        <field id="track_controller" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Track Controllers</label>
+                            <comment><![CDATA[Track the controllers as transactions.]]></comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <depends>
+                                <field id="enable">1</field>
+                            </depends>
+                        </field>
+                        <field id="real_user_monitoring" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                            <label>Real User Monitoring</label>
+                            <comment><![CDATA[Enable when your New Relic subscription includes this feature]]></comment>
+                            <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                            <depends>
+                                <field id="enable">1</field>
+                            </depends>
+                        </field>
+                </group>
+        </section>
+    </system>
+</config>
