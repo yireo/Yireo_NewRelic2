@@ -35,7 +35,7 @@ class Agent
      */
     public function addCustomMetric($name, $value)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling addCustomMetric');
+        $this->logger->addDebug('NewRelic2 agent: Calling addCustomMetric', array($name, $value));
 
         if (function_exists('newrelic_custom_metric') == false) {
             return false;
@@ -54,7 +54,7 @@ class Agent
      */
     public function addCustomParameter($name, $value)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling addCustomerParameter');
+        $this->logger->addDebug('NewRelic2 agent: Calling addCustomerParameter', array($name, $value));
 
         if (function_exists('newrelic_custom_parameter') == false) {
             return false;
@@ -70,8 +70,10 @@ class Agent
      */
     public function setUserAttributes()
     {
+        $parameters = func_get_args();
+        $this->logger->addDebug('NewRelic2 agent: Calling setUserAttributes', $parameters);
+
         if(function_exists('newrelic_set_user_attributes')) {
-            $parameters = func_get_args();
             call_user_func_array('newrelic_set_user_attributes', $parameters);
         }
     }
@@ -81,6 +83,8 @@ class Agent
      */
     public function setBackgroundJob($backgroundJob)
     {
+        $this->logger->addDebug('NewRelic2 agent: Calling setBackgroundJob');
+
         if(function_exists('newrelic_background_job')) {
             newrelic_background_job($backgroundJob);
         }
@@ -91,7 +95,7 @@ class Agent
      */
     public function setNameTransaction($name)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling setNameTransaction');
+        $this->logger->addDebug('NewRelic2 agent: Calling setNameTransaction', array($name));
 
         if (function_exists('newrelic_name_transaction')) {
             newrelic_name_transaction($name);
@@ -105,6 +109,9 @@ class Agent
      */
     public function setAppName($name, $license, $xmit)
     {
+        $parameters = func_get_args();
+        $this->logger->addDebug('NewRelic2 agent: Calling setAppName', $parameters);
+
         if (!empty($name) && function_exists('newrelic_set_appname')) {
             newrelic_set_appname($name, $license, $xmit);
         }

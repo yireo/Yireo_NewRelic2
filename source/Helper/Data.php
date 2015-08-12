@@ -33,8 +33,9 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isAdmin()
     {
-        $om         = \Magento\Framework\App\ObjectManager::getInstance();
-        $appState  = $om->get('Magento\Framework\App\State');
+        // @todo: Rewrite this to DI to allow for proper testing
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $appState  = $objectManager->get('Magento\Framework\App\State');
 
         if($appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE)
         {
@@ -104,6 +105,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getConfigValue($key = null, $defaultValue = null)
     {
+        echo "Helper: ".get_class($this->scopeConfig)."\n";
+
         $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
@@ -126,16 +129,15 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getConfigFlag($key = null, $defaultValue = false) 
     {
-        $result = $this->scopeConfig->getValue(
+        $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE
         );
 
-        if (empty($result)) {
-            $result = $defaultValue;
+        if (empty($value)) {
+            $value = $defaultValue;
         }
 
-        return $result;
+        return (bool) $value;
     }
-
 }
