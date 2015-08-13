@@ -20,6 +20,7 @@ class Observer
      * @param \Magento\Store\Model\Store $store
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Framework\Registry $registry
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         \Yireo\NewRelic2\Model\Service\Agent $agent,
@@ -28,7 +29,8 @@ class Observer
         \Magento\Indexer\Model\IndexerInterface $indexer,
         \Magento\Store\Model\Store $store,
         \Magento\Customer\Model\Session $customerSession,
-        \Magento\Framework\Registry $registry
+        \Magento\Framework\Registry $registry,
+        \Psr\Log\LoggerInterface $logger
     )
     {
         $this->agent = $agent;
@@ -38,6 +40,7 @@ class Observer
         $this->store = $store;
         $this->customerSession = $customerSession;
         $this->registry = $registry;
+        $this->logger = $logger;
     }
 
     /**
@@ -110,18 +113,38 @@ class Observer
         if (!empty($processIds) && is_array($processIds)) {
             try {
                 foreach ($processIds as $processId) {
-                    $process = $this->indexer->getProcessById($processId);
-                    $indexerCode = $process->getIndexerCode();
+                    $indexerCode = $this->getIndexerCodeByProcessId($processId);
                     $this->agent->addCustomMetric('Magento/Event/reindex:'.$indexerCode, (float)1.0);
                 }
 
-            } catch (Exception $e) {
-                Mage::logException($e);
+            } catch (\Exception $e) {
+                $this->debug('Exception', $e->getMessage());
                 return $this;
             }
         }
 
         return $this;
+    }
+
+    /**
+     * Return the indexer code by process ID
+     *
+     * @param $processId
+     *
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    public function getIndexerCodeByProcessId($processId)
+    {
+        $process = $this->indexer->getProcessById($processId);
+
+        if (empty($process)) {
+            throw new \InvalidArgumentException('Process ID is invalid: '.$processId);
+        }
+
+
+        $indexerCode = $process->getIndexerCode();
+        return $indexerCode;
     }
 
     /**
@@ -140,13 +163,12 @@ class Observer
         if (!empty($processIds) && is_array($processIds)) {
             try {
                 foreach ($processIds as $processId) {
-                    $process = $this->indexer->getProcessById($processId);
-                    $indexerCode = $process->getIndexerCode();
+                    $indexerCode = $this->getIndexerCodeByProcessId($processId);
                     $this->agent->addCustomMetric('Magento/Event/reindex:'.$indexerCode, (float)1.0);
                 }
 
-            } catch (Exception $e) {
-                Mage::logException($e);
+            } catch (\Exception $e) {
+                $this->debug('Exception', $e->getMessage());
                 return $this;
             }
         }
@@ -192,11 +214,11 @@ class Observer
     protected function _setupAppName() 
     {
         $helper = $this->helper;
-        $appname = trim($helper->getAppName());
+        $appName = trim($helper->getAppName());
         $license = trim($helper->getLicense());
         $xmit = $helper->isUseXmit();
 
-        $this->agent->setAppName($appname, $license, $xmit);
+        $this->agent->setAppName($appName, $license, $xmit);
 
         return $this;
     }
@@ -295,7 +317,7 @@ class Observer
         }
 
         $object = $observer->getEvent()->getObject();
-        $this->agent->addCustomMetric('Magento/' . get_class($object) . '_Save', (float)1.0);
+        $this->agent->addCustomMetric(get_class($object) . '::save', (float)1.0);
 
         return $this;
     }
@@ -313,7 +335,7 @@ class Observer
         }
 
         $object = $observer->getEvent()->getObject();
-        $this->agent->addCustomMetric('Magento/' . get_class($object) . '_Delete', (float)1.0);
+        $this->agent->addCustomMetric(get_class($object) . '::delete', (float)1.0);
 
         return $this;
     }
@@ -337,5 +359,23 @@ class Observer
     public function crontab(\Magento\Framework\Event\Observer $observer) 
     {
         $this->agent->setBackgroundJob(true);
+    }
+
+    /**
+     * @param string $string
+     * @param mixed $variables
+     */
+    public function debug($string, $variables = null)
+    {
+        if ($this->helper->isDebug() == false) {
+            return;
+        }
+
+        if (!empty($variables))
+        {
+            $string .= var_export($variables, true);
+        }
+
+        $this->logger->debug('NewRelic2 observer: '.$string);
     }
 }

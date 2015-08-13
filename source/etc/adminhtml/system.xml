@@ -67,6 +67,15 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
+                <field id="debug" translate="label" type="select" sortOrder="60" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Debug</label>
+                    <comment><![CDATA[Write debugging information to debug-log]]></comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
     </system>

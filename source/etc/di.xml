@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<config>
+    <type name="Magento\Framework\View\Element\AbstractBlock">
+        <plugin name="newrelic2-abstractblock" type="Yireo\NewRelic2\Model\Plugin\AbstractBlock" sortOrder="1" />
+    </type>
+</config>

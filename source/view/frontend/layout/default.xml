@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * NewRelic2 plugin for Magento
+ *
+ * @package     Yireo_NewRelic2
+ * @author      Yireo (http://www.yireo.com/)
+ * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
+ * @license     Simplified BSD License
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <body>
+        <container name="newrelic-footer" after="-">
+            <block class="Yireo\NewRelic2\Block\Rum\Timing\Footer"  name="newrelic-rum-timing-footer" after="-" />
+        </container>
+
+        <referenceBlock name="head.additional" after="-">
+            <block class="Yireo\NewRelic2\Block\Rum\Timing\Header"  name="newrelic-rum-timing-header" after="-" />
+        </referenceBlock>
+    </body>
+</page>

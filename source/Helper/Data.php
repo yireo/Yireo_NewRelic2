@@ -27,16 +27,26 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     }
 
     /**
+     * Check whether debugging is enabled
+     *
+     * @return bool
+     */
+    public function isDebug()
+    {
+        return $this->getConfigFlag('debug');
+    }
+
+    /**
      * Check whether the current area is the admin area
      *
      * @return bool
      */
     public function isAdmin()
     {
-        // @todo: Rewrite this to DI to allow for proper testing
         $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $appState  = $objectManager->get('Magento\Framework\App\State');
 
+        /** @var $appState \Magento\Framework\App\State */
         if($appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE)
         {
             return true;
@@ -105,8 +115,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function getConfigValue($key = null, $defaultValue = null)
     {
-        echo "Helper: ".get_class($this->scopeConfig)."\n";
-
         $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
             \Magento\Store\Model\ScopeInterface::SCOPE_STORE

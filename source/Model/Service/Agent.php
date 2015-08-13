@@ -35,9 +35,9 @@ class Agent
      */
     public function addCustomMetric($name, $value)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling addCustomMetric', array($name, $value));
+        $this->debug('Calling addCustomMetric', array($name, $value));
 
-        if (function_exists('newrelic_custom_metric') == false) {
+        if ($this->functionExists('newrelic_custom_metric') == false) {
             return false;
         }
 
@@ -54,9 +54,9 @@ class Agent
      */
     public function addCustomParameter($name, $value)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling addCustomerParameter', array($name, $value));
+        $this->debug('Calling addCustomerParameter', array($name, $value));
 
-        if (function_exists('newrelic_custom_parameter') == false) {
+        if ($this->functionExists('newrelic_custom_parameter') == false) {
             return false;
         }
 
@@ -71,9 +71,9 @@ class Agent
     public function setUserAttributes()
     {
         $parameters = func_get_args();
-        $this->logger->addDebug('NewRelic2 agent: Calling setUserAttributes', $parameters);
+        $this->debug('Calling setUserAttributes', $parameters);
 
-        if(function_exists('newrelic_set_user_attributes')) {
+        if($this->functionExists('newrelic_set_user_attributes')) {
             call_user_func_array('newrelic_set_user_attributes', $parameters);
         }
     }
@@ -83,9 +83,9 @@ class Agent
      */
     public function setBackgroundJob($backgroundJob)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling setBackgroundJob');
+        $this->debug('Calling setBackgroundJob');
 
-        if(function_exists('newrelic_background_job')) {
+        if($this->functionExists('newrelic_background_job')) {
             newrelic_background_job($backgroundJob);
         }
     }
@@ -95,9 +95,9 @@ class Agent
      */
     public function setNameTransaction($name)
     {
-        $this->logger->addDebug('NewRelic2 agent: Calling setNameTransaction', array($name));
+        $this->debug('Calling setNameTransaction', array($name));
 
-        if (function_exists('newrelic_name_transaction')) {
+        if ($this->functionExists('newrelic_name_transaction')) {
             newrelic_name_transaction($name);
         }
     }
@@ -110,10 +110,34 @@ class Agent
     public function setAppName($name, $license, $xmit)
     {
         $parameters = func_get_args();
-        $this->logger->addDebug('NewRelic2 agent: Calling setAppName', $parameters);
+        $this->debug('Calling setAppName', $parameters);
 
-        if (!empty($name) && function_exists('newrelic_set_appname')) {
+        if (!empty($name) && $this->functionExists('newrelic_set_appname')) {
             newrelic_set_appname($name, $license, $xmit);
         }
+    }
+
+    /**
+     * @param string $function
+     *
+     * @return bool
+     */
+    public function functionExists($function)
+    {
+        return function_exists($function);
+    }
+
+    /**
+     * @param string $string
+     * @param mixed $variables
+     */
+    public function debug($string, $variables = null)
+    {
+        if (!empty($variables))
+        {
+            $string .= var_export($variables, true);
+        }
+
+        $this->logger->debug('NewRelic2 agent: '.$string);
     }
 }

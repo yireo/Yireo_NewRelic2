@@ -50,10 +50,18 @@ class DataTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAdmin()
     {
-        /*$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
+
+        /** @var \Magento\Framework\App\Http $app */
+        $bootstrap->createApplication('Magento\Framework\App\Http');
+
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
         $appState  = $objectManager->get('Magento\Framework\App\State');
 
-        if($appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE);*/
+        $backendAreaCode = \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
+        $appState->setAreaCode($backendAreaCode);
+
+        $this->assertTrue($this->targetHelper->isAdmin());
     }
 
     /**
@@ -64,7 +72,6 @@ class DataTest extends \PHPUnit_Framework_TestCase
     protected function _getContextStub()
     {
         $scopeConfig = $this->_getScopeConfigStub();
-
 
         $context = $this->getMock(
             'Magento\Framework\App\Helper\Context',
@@ -88,6 +95,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
     protected function _getScopeConfigStub()
     {
         $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
+
         $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 
         return $scopeConfig;
