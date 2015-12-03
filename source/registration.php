@@ -1,6 +1,6 @@
 <?php
 /**
- * NewRelic2 plugin for Magento
+ * NewRelic2 module for Magento
  *
  * @package     Yireo_NewRelic2
  * @author      Yireo (http://www.yireo.com/)
