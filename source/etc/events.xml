@@ -1,54 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/Event/etc/events.xsd">
+        xsi:noNamespaceSchemaLocation="../../../../../vendor/magento/framework/Event/etc/events.xsd">
     <event name="adminhtml_cache_flush_all">
         <observer name="yireo_newrelic2_adminhtml_cache_flush_all"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="adminhtmlCacheFlushAll"/>
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushAll"/>
     </event>
     <event name="adminhtml_cache_flush_system">
         <observer name="yireo_newrelic2_adminhtml_cache_flush_system"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="adminhtmlCacheFlushSystem"/>
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushSystem"/>
     </event>
     <event name="adminhtml_cache_flush_type">
         <observer name="yireo_newrelic2_adminhtml_cache_flush_type"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="adminhtmlCacheFlushType"/>
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushType"/>
     </event>
     <event name="adminhtml_cache_refresh_type">
         <observer name="yireo_newrelic2_adminhtml_cache_refresh_type"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="adminhtmlCacheRefreshType"/>
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheRefreshType"/>
     </event>
     <event name="controller_action_postdispatch_adminhtml_process_massReindex">
         <observer name="yireo_newrelic2_controller_action_postdispatch_adminhtml_process_massReindex"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="controllerActionPostdispatchAdminhtmlProcessMassReindex"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPostdispatchAdminhtmlProcessMassReindex"/>
     </event>
     <event name="controller_action_postdispatch_adminhtml_process_reindexProcess">
         <observer name="yireo_newrelic2_controller_action_postdispatch_adminhtml_process_reindexProcess"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="controllerActionPostdispatchAdminhtmlProcessReindexProcess"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPostdispatchAdminhtmlProcessReindexProcess"/>
     </event>
     <event name="controller_action_predispatch">
         <observer name="yireo_newrelic2_controller_action_predispatch"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="controllerActionPredispatch"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPredispatch"/>
     </event>
     <event name="controller_action_postdispatch">
         <observer name="yireo_newrelic2_controller_action_postdispatch"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="controllerActionPostdispatch"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPostdispatch"/>
     </event>
     <event name="model_save_after">
         <observer name="yireo_newrelic2_model_save_after"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="modelSaveAfter"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ModelSaveAfter"/>
     </event>
     <event name="model_delete_after">
         <observer name="yireo_newrelic2_model_delete_after"
-                  instance="Yireo\NewRelic2\Model\Observer"
-                  method="modelDeleteAfter"/>
+                  instance="Yireo\NewRelic2\Model\Observer\ModelDeleteAfter"/>
     </event>
 </config>
