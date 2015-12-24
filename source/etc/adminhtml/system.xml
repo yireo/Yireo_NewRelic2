@@ -14,33 +14,28 @@
         <section id="newrelic2" translate="label" sortOrder="342" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Yireo New Relic</label>
             <tab>advanced</tab>
-            <resource>Yireo_NewRelic2::test</resource>
-            <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1"
-                   showInStore="1">
+            <resource>Yireo_NewRelic2::config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Settings</label>
-                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="appname" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="appname" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Application Name</label>
                     <comment><![CDATA[Appears in New Relic application-overview]]></comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="license" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="license" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>License Key</label>
                     <comment><![CDATA[Override of New Relic license-key]]></comment>
                     <depends>
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="xmit" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1"
-                       showInStore="1">
+                <field id="xmit" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Use xmit</label>
                     <comment><![CDATA[Use xmit on 'newrelic_set_appname. Warning: This gives a slight performance overhead - check the NewRelic docs for details]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -48,8 +43,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="track_controller" translate="label" type="select" sortOrder="50" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="track_controller" translate="label" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Track Controllers</label>
                     <comment><![CDATA[Track the controllers as transactions.]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -57,8 +51,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="real_user_monitoring" translate="label" type="select" sortOrder="60" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="real_user_monitoring" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Real User Monitoring</label>
                     <comment><![CDATA[Enable when your New Relic subscription includes this feature]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -66,8 +59,7 @@
                         <field id="enabled">1</field>
                     </depends>
                 </field>
-                <field id="debug" translate="label" type="select" sortOrder="60" showInDefault="1"
-                       showInWebsite="1" showInStore="1">
+                <field id="debug" translate="label" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Debug</label>
                     <comment><![CDATA[Write debugging information to debug-log]]></comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>

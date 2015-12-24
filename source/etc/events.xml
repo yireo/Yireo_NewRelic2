@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="../../../../../vendor/magento/framework/Event/etc/events.xsd">
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:/Event/etc/events.xsd">
     <event name="adminhtml_cache_flush_all">
         <observer name="yireo_newrelic2_adminhtml_cache_flush_all"
                   instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushAll"/>

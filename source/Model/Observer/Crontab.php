@@ -33,6 +33,10 @@ class Crontab extends \Yireo\NewRelic2\Model\Observer
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
+        if (!$this->helper->isEnabled()) {
+            return $this;
+        }
+
         $this->agent->setBackgroundJob(true);
     }
 }

@@ -13,11 +13,27 @@ namespace Yireo\NewRelic2\Helper;
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /**
+     * Constructor
+     *
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\App\State $appState
+     */
+    public function __construct(
+        \Magento\Framework\App\Helper\Context $context,
+        \Magento\Framework\App\State $appState
+    )
+    {
+        $this->appState = $appState;
+
+        parent::__construct($context);
+    }
+
+    /**
      * Check whether this module can be used
      *
      * @return bool
      */
-    public function isEnabled() 
+    public function isEnabled()
     {
         if (!extension_loaded('newrelic')) {
             return false;
@@ -33,6 +49,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isDebug()
     {
+        if ($this->isEnabled() == false) {
+            return false;
+
+        }
+
         return $this->getConfigFlag('debug');
     }
 
@@ -43,12 +64,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isAdmin()
     {
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $appState  = $objectManager->get('Magento\Framework\App\State');
-
-        /** @var $appState \Magento\Framework\App\State */
-        if($appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE)
-        {
+        if ($this->appState->getAreaCode() == \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE) {
             return true;
         }
 
@@ -60,7 +76,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string
      */
-    public function getAppName() 
+    public function getAppName()
     {
         return $this->getConfigValue('appname');
     }
@@ -70,7 +86,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string
      */
-    public function getLicense() 
+    public function getLicense()
     {
         return $this->getConfigValue('license');
     }
@@ -80,7 +96,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isUseXmit() 
+    public function isUseXmit()
     {
         return $this->getConfigFlag('xmit');
     }
@@ -90,7 +106,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isTrackController() 
+    public function isTrackController()
     {
         return $this->getConfigFlag('track_controller');
     }
@@ -100,7 +116,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function isUseRUM() 
+    public function isUseRUM()
     {
         return $this->getConfigFlag('real_user_monitoring');
     }
@@ -135,7 +151,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return bool
      */
-    public function getConfigFlag($key = null, $defaultValue = false) 
+    public function getConfigFlag($key = null, $defaultValue = false)
     {
         $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
@@ -146,6 +162,6 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
             $value = $defaultValue;
         }
 
-        return (bool) $value;
+        return (bool)$value;
     }
 }

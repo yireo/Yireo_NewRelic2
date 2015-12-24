@@ -27,7 +27,9 @@ class AbstractBlock
 
     public function afterToHtml(\Magento\Framework\View\Element\AbstractBlock $subject, $result)
     {
-        $this->agent->addCustomParameter('block::'.$subject->getNameInLayout(), 1);
+        if ($this->helper->isEnabled()) {
+            $this->agent->addCustomParameter('block::'.$subject->getNameInLayout(), 1);
+        }
 
         return $result;
     }
