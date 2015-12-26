@@ -33,7 +33,7 @@ class ModelSaveAfter implements \Magento\Framework\Event\ObserverInterface
      */
     public function execute(\Magento\Framework\Event\Observer $observer)
     {
-        if ($this->helper->isEnabled()) {
+        if (!$this->helper->isEnabled()) {
             return $this;
         }
 
