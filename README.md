@@ -9,6 +9,8 @@ We recommend `composer` to install this package. However, if you want a manual c
 * Make sure to install New Relic on your server first
 * Make sure to have New Relics PHP module installed and active
 * Upload the files in the `source/` folder to the folder `app/code/Yireo/NewRelic2` of your site
+* Run `php -f bin/magento module:enable Yireo_NewRelic2`
+* Run `php -f bin/magento setup:upgrade`
 * Flush the Magento cache
 * Configure settings under `Stores > Configuration > Advanced > Yireo New Relic`
 * Done
