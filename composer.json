@@ -1,6 +1,6 @@
 {
     "name": "yireo/yireo_newrelic2",
-    "license": "Simple BSD License",
+    "license": "BSD-2-Clause",
     "type": "magento2-module",
     "homepage": "https://www.yireo.com/software/magento-extensions/newrelic",
     "description": "Add NewRelic JS support and PHP tracking to Magento",
@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "magento/framework": "*",
+        "magento/framework": "100.0.*",
         "php": ">=5.6.0"
     },
     "require-dev":{
@@ -25,6 +25,14 @@
                 "source/*",
                 "Yireo/NewRelic2"
             ]
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Yireo\\NewRelic2\\": "source"
+        },        
+        "files": [
+            "source/registration.php"
         ]
     }
 }
