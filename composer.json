@@ -20,14 +20,6 @@
         "phpunit/phpunit":"*",
         "composer/composer":"*@dev"
     },
-    "extra":{
-        "map": [
-            [
-                "source/*",
-                "Yireo/NewRelic2"
-            ]
-        ]
-    },
     "autoload": {
         "psr-4": {
             "Yireo\\NewRelic2\\": "source"
