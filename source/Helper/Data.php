@@ -35,11 +35,27 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      */
     public function isEnabled()
     {
-        if (!extension_loaded('newrelic')) {
+        if (!$this->hasNewRelicModule()) {
             return false;
         }
 
         return $this->getConfigFlag('enabled');
+    }
+
+    /**
+     *
+     */
+    public function hasNewRelicModule()
+    {
+        if ($this->getConfigFlag('fake_module')) {
+            return true;
+        }
+
+        if (extension_loaded('newrelic')) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
