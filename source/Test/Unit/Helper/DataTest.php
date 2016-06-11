@@ -34,9 +34,9 @@ class DataTest extends \PHPUnit_Framework_TestCase
         $context = $this->_getContextStub();
         $this->targetHelper = new \Yireo\NewRelic2\Helper\Data($context);
 
-        if (!(extension_loaded('newrelic'))) {
-            $this->markTestSkipped('The NewRelic extension is not available.');
-        }
+        //if (!(extension_loaded('newrelic'))) {
+        //    $this->markTestSkipped('The NewRelic extension is not available.');
+        //}
     }
 
     /**
