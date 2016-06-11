@@ -44,7 +44,13 @@ class GenericTest extends \PHPUnit_Framework_TestCase
      */
     public function testCanShow()
     {
+        $context = $this->_getContextStub();
+        $helper = $this->_getHelperStub();
+        $data = [];
+        $instanceArgs = [$context, $data, $helper];
+
         $class = new ReflectionClass('Yireo\NewRelic2\Block\Rum\Timing\Generic');
+        $instance = $class->newInstanceArgs($instanceArgs);
         $method = $class->getMethod('_canShow');
         $method->setAccessible(true);
         $result = $method->invokeArgs($this->targetBlock);

@@ -5,7 +5,8 @@
          bootstrap="./framework/bootstrap.php"
         >
     <testsuite name="Yireo Unit Tests">
-        <directory suffix="Test.php">../../../app/code/Yireo/*/Test/Unit</directory>
+        <directory suffix="Test.php">source/Test/Unit</directory>
+        <!--<directory suffix="Test.php">../../../app/code/Yireo/*/Test/Unit</directory>-->
     </testsuite>
     <php>
         <ini name="date.timezone" value="Europe/Amsterdam"/>
