@@ -10,7 +10,12 @@
 
 namespace Yireo\NewRelic2\Block\Rum\Timing;
 
-abstract class Generic extends \Magento\Framework\View\Element\AbstractBlock
+/**
+ * Class Generic
+ *
+ * @package Yireo\NewRelic2\Block\Rum\Timing
+ */
+class Generic extends \Magento\Framework\View\Element\AbstractBlock
 {
     /**
      * Constructor
@@ -31,7 +36,9 @@ abstract class Generic extends \Magento\Framework\View\Element\AbstractBlock
     /**
      * @return mixed
      */
-    public abstract function getContentHtml();
+    public function getContentHtml()
+    {
+    }
 
     /**
      * @return \Yireo\NewRelic2\Helper\Data

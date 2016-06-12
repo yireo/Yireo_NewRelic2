@@ -10,8 +10,16 @@
 
 namespace Yireo\NewRelic2\Block\Rum\Timing;
 
+/**
+ * Class Footer
+ *
+ * @package Yireo\NewRelic2\Block\Rum\Timing
+ */
 class Footer extends Generic
 {
+    /**
+     * @return string
+     */
     public function getContentHtml()
     {
         if (function_exists('newrelic_get_browser_timing_footer') == false) {

@@ -12,6 +12,11 @@ namespace Yireo\NewRelic2\Test\Unit\Helper;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 
+/**
+ * Class DataTest
+ *
+ * @package Yireo\NewRelic2\Test\Unit\Helper
+ */
 class DataTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -32,7 +37,10 @@ class DataTest extends \PHPUnit_Framework_TestCase
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
         $context = $this->_getContextStub();
-        $this->targetHelper = new \Yireo\NewRelic2\Helper\Data($context);
+        $appState = $this->_getAppStateStub();
+        $this->targetHelper = new \Yireo\NewRelic2\Helper\Data($context, $appState);
+
+        //$this->targetHelper = $this->objectManagerHelper->getObject('\Yireo\NewRelic2\Helper\Data');
 
         //if (!(extension_loaded('newrelic'))) {
         //    $this->markTestSkipped('The NewRelic extension is not available.');
@@ -120,13 +128,30 @@ class DataTest extends \PHPUnit_Framework_TestCase
         $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
 
         /** @var \Magento\Framework\App\Http $app */
+        /*
         $bootstrap->createApplication('Magento\Framework\App\Http');
 
-        //$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        //$appState  = $objectManager->get('Magento\Framework\App\State');
-        //$backendAreaCode = \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
-        //$appState->setAreaCode($backendAreaCode);
-        $appState  = $this->_getAppStateStub();
+        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+        $appState  = $objectManager->get('Magento\Framework\App\State');
+        $backendAreaCode = \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
+        $appState->setAreaCode($backendAreaCode);
+
+        $this->getMockBuilder($appState)
+        $appState = $this->createMock(\Magento\Framework\App\State::class);
+
+        $appState->method('getAreaCode')
+            ->willReturn(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE);
+
+        $appState = $this->getMockBuilder(\Magento\Framework\App\State::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getAreaCode'])
+            ->getMock();
+
+        $appState->expects($this->once())
+            ->method('getAreaCode')
+            ->with($this->equalTo(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE));
+
+        */
 
         $this->assertTrue($this->targetHelper->isAdmin());
     }
@@ -138,7 +163,8 @@ class DataTest extends \PHPUnit_Framework_TestCase
      */
     protected function _getAppStateStub()
     {
-        $context = $this->getMock(
+        // @todo: Rewrite to getMockObject()
+        $appState = $this->getMock(
             'Magento\Framework\App\State',
             ['getAreacode'],
             [\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE],
@@ -146,8 +172,15 @@ class DataTest extends \PHPUnit_Framework_TestCase
             false,
             false
         );
+
+        $appState->expects($this->any())
+            ->method('getAreaCode')
+            ->will($this->returnValue(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE)
+            );
+
+        return $appState;
     }
-    
+
     /**
      * Get a stub for the $context parameter of the helper
      *
@@ -167,7 +200,10 @@ class DataTest extends \PHPUnit_Framework_TestCase
             false
         );
 
-        $context->expects($this->any())->method('getScopeConfig')->will($this->returnValue($scopeConfig));
+        $context->expects($this->any())
+            ->method('getScopeConfig')
+            ->will($this->returnValue($scopeConfig)
+            );
 
         return $context;
     }
@@ -203,6 +239,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
             'newrelic2/settings/track_controller' => '1',
             'newrelic2/settings/real_user_monitoring' => '1',
             'newrelic2/settings/fake_module' => '1',
+            'newrelic2/settings/debug' => '1',
         ];
 
         if (array_key_exists($hashName, $defaultConfig)) {

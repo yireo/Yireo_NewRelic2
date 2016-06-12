@@ -68,7 +68,7 @@ class HeaderTest extends \PHPUnit_Framework_TestCase
      */
     protected function _getContextStub()
     {
-        $context = $this->getMockBuilder('Magento\Framework\App\Helper\Context')
+        $context = $this->getMockBuilder('Magento\Framework\View\Element\Context')
             ->disableOriginalConstructor()
             ->getMock();
 

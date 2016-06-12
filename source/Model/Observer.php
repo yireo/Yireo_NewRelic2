@@ -10,6 +10,11 @@
 
 namespace Yireo\NewRelic2\Model;
 
+/**
+ * Class Observer
+ *
+ * @package Yireo\NewRelic2\Model
+ */
 abstract class Observer implements \Magento\Framework\Event\ObserverInterface
 {
     /**

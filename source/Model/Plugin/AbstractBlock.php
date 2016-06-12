@@ -10,6 +10,11 @@
 
 namespace Yireo\NewRelic2\Model\Plugin;
 
+/**
+ * Class AbstractBlock
+ *
+ * @package Yireo\NewRelic2\Model\Plugin
+ */
 class AbstractBlock
 {
     /**
@@ -25,6 +30,12 @@ class AbstractBlock
         $this->helper = $helper;
     }
 
+    /**
+     * @param \Magento\Framework\View\Element\AbstractBlock $subject
+     * @param $result
+     *
+     * @return mixed
+     */
     public function afterToHtml(\Magento\Framework\View\Element\AbstractBlock $subject, $result)
     {
         if ($this->helper->isEnabled()) {

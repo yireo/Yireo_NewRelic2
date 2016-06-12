@@ -10,8 +10,18 @@
 
 namespace Yireo\NewRelic2\Helper;
 
+/**
+ * Class Data
+ *
+ * @package Yireo\NewRelic2\Helper
+ */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    /**
+     * @var \Magento\Framework\App\State
+     */
+    protected $appState;
+
     /**
      * Constructor
      *

@@ -12,6 +12,11 @@ namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 
+/**
+ * Class GenericTest
+ *
+ * @package Yireo\NewRelic2\Test\Unit\Block\Rum\Timing
+ */
 class GenericTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -49,11 +54,11 @@ class GenericTest extends \PHPUnit_Framework_TestCase
         $data = [];
         $instanceArgs = [$context, $data, $helper];
 
-        $class = new ReflectionClass('Yireo\NewRelic2\Block\Rum\Timing\Generic');
+        $class = new \ReflectionClass('Yireo\NewRelic2\Block\Rum\Timing\Generic');
         $instance = $class->newInstanceArgs($instanceArgs);
         $method = $class->getMethod('_canShow');
         $method->setAccessible(true);
-        $result = $method->invokeArgs($this->targetBlock);
+        $result = $method->invokeArgs($this->targetBlock, []);
 
         $this->assertTrue($result);
     }
@@ -85,7 +90,7 @@ class GenericTest extends \PHPUnit_Framework_TestCase
      */
     protected function _getContextStub()
     {
-        $context = $this->getMockBuilder('Magento\Framework\App\Helper\Context')
+        $context = $this->getMockBuilder('Magento\Framework\View\Element\Context')
             ->disableOriginalConstructor()
             ->getMock();
 

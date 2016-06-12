@@ -12,6 +12,12 @@ namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 
+/**
+ * Class FooterTest
+ *
+ * @package Yireo\NewRelic2\Test\Unit\Block\Rum\Timing
+ * @covers \Yireo\NewRelic2\Block\Rum\Timing\Footer
+ */
 class FooterTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -68,7 +74,7 @@ class FooterTest extends \PHPUnit_Framework_TestCase
      */
     protected function _getContextStub()
     {
-        $context = $this->getMockBuilder('Magento\Framework\App\Helper\Context')
+        $context = $this->getMockBuilder('Magento\Framework\View\Element\Context')
             ->disableOriginalConstructor()
             ->getMock();
 
