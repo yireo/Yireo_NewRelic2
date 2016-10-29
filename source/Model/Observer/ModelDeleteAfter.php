@@ -10,8 +10,23 @@
 
 namespace Yireo\NewRelic2\Model\Observer;
 
+/**
+ * Class ModelDeleteAfter
+ *
+ * @package Yireo\NewRelic2\Model\Observer
+ */
 class ModelDeleteAfter implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Yireo\NewRelic2\Model\Service\Agent
+     */
+    protected $agent;
+
+    /**
+     * @var \Yireo\NewRelic2\Helper\Data
+     */
+    protected $helper;
+
     /**
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper

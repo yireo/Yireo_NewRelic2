@@ -18,6 +18,46 @@ namespace Yireo\NewRelic2\Model;
 abstract class Observer implements \Magento\Framework\Event\ObserverInterface
 {
     /**
+     * @var Service\Agent
+     */
+    protected $agent;
+
+    /**
+     * @var \Yireo\NewRelic2\Helper\Data
+     */
+    protected $helper;
+
+    /**
+     * @var \Magento\Framework\App\RequestInterface
+     */
+    protected $request;
+
+    /**
+     * @var \Magento\Framework\Indexer\IndexerInterface
+     */
+    protected $indexer;
+
+    /**
+     * @var \Magento\Store\Model\Store
+     */
+    protected $store;
+
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $customerSession;
+
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    protected $registry;
+
+    /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper
      * @param \Magento\Framework\App\RequestInterface $request

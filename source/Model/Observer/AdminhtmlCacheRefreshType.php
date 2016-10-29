@@ -13,6 +13,16 @@ namespace Yireo\NewRelic2\Model\Observer;
 class AdminhtmlCacheRefreshType implements \Magento\Framework\Event\ObserverInterface
 {
     /**
+     * @var \Yireo\NewRelic2\Model\Service\Agent
+     */
+    protected $agent;
+
+    /**
+     * @var \Yireo\NewRelic2\Helper\Data
+     */
+    protected $helper;
+
+    /**
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper
      */
