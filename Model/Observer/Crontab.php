@@ -10,8 +10,23 @@
 
 namespace Yireo\NewRelic2\Model\Observer;
 
-class Crontab extends \Yireo\NewRelic2\Model\Observer
+/**
+ * Class Crontab
+ *
+ * @package Yireo\NewRelic2\Model\Observer
+ */
+class Crontab implements \Magento\Framework\Event\ObserverInterface
 {
+    /**
+     * @var \Yireo\NewRelic2\Model\Service\Agent
+     */
+    protected $agent;
+
+    /**
+     * @var \Yireo\NewRelic2\Helper\Data
+     */
+    protected $helper;
+
     /**
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper
