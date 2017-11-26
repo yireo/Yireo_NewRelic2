@@ -18,6 +18,16 @@ namespace Yireo\NewRelic2\Model\Plugin;
 class AbstractBlock
 {
     /**
+     * @var \Yireo\NewRelic2\Model\Service\Agent
+     */
+    private $agent;
+
+    /**
+     * @var \Yireo\NewRelic2\Helper\Data
+     */
+    private $helper;
+
+    /**
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper
      */
