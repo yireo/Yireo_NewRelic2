@@ -21,7 +21,10 @@
         "composer/composer":"*@dev"
     },
     "autoload": {
-        "files": [
+      "psr-4": {
+        "Yireo\\NewRelic2\\": ""
+      },
+      "files": [
             "registration.php"
         ]
     }
