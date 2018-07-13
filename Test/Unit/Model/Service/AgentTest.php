@@ -7,15 +7,20 @@
  * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Test\Unit\Model\Service;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use Yireo\NewRelic2\Model\Service\Agent;
 
-class AgentTest extends \PHPUnit_Framework_TestCase
+class AgentTest extends TestCase
 {
     /**
-     * @var \Yireo\NewRelic2\Model\Service\Agent
+     * @var Agent
      */
     protected $targetModel;
 
@@ -32,17 +37,17 @@ class AgentTest extends \PHPUnit_Framework_TestCase
         $this->objectManagerHelper = new ObjectManagerHelper($this);
 
         $logger = $this->_getLoggerStub();
-        $this->targetModel = new \Yireo\NewRelic2\Model\Service\Agent($logger);
+        $this->targetModel = new Agent($logger);
     }
 
     /**
      * Get a stub for the logging part
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function _getLoggerStub()
     {
-        $logger = $this->getMock('\Psr\Log\LoggerInterface');
+        $logger = $this->createMock(LoggerInterface::class);
 
         $logger->expects($this->any())->method('debug')->will($this->returnValue(true));
 

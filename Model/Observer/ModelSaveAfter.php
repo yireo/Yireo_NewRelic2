@@ -8,32 +8,38 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Observer;
+
+use Magento\Framework\Event\ObserverInterface;
+use Yireo\NewRelic2\Helper\Data;
+use Yireo\NewRelic2\Model\Service\Agent;
 
 /**
  * Class ModelSaveAfter
  *
  * @package Yireo\NewRelic2\Model\Observer
  */
-class ModelSaveAfter implements \Magento\Framework\Event\ObserverInterface
+class ModelSaveAfter implements ObserverInterface
 {
     /**
-     * @var \Yireo\NewRelic2\Model\Service\Agent
+     * @var Agent
      */
     protected $agent;
 
     /**
-     * @var \Yireo\NewRelic2\Helper\Data
+     * @var Data
      */
     protected $helper;
 
     /**
-     * @param \Yireo\NewRelic2\Model\Service\Agent $agent
-     * @param \Yireo\NewRelic2\Helper\Data $helper
+     * @param Agent $agent
+     * @param Data $helper
      */
     public function __construct(
-        \Yireo\NewRelic2\Model\Service\Agent $agent,
-        \Yireo\NewRelic2\Helper\Data $helper
+        Agent $agent,
+        Data $helper
     )
     {
         $this->agent = $agent;

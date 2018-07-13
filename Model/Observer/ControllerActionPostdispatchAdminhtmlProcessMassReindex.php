@@ -8,17 +8,28 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Observer;
 
-class ControllerActionPostdispatchAdminhtmlProcessMassReindex extends \Yireo\NewRelic2\Model\Observer
+use Magento\Framework\Event\Observer as CoreObserver;
+use Yireo\NewRelic2\Model\Observer;
+
+/**
+ * Class ControllerActionPostdispatchAdminhtmlProcessMassReindex
+ *
+ * @package Yireo\NewRelic2\Model\Observer
+ */
+class ControllerActionPostdispatchAdminhtmlProcessMassReindex extends Observer
 {
     /**
      * Listen to the event controller_action_postdispatch_adminhtml_process_massReindex
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param CoreObserver $observer
+     *
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(CoreObserver $observer)
     {
         if (!$this->helper->isEnabled()) {
             return $this;

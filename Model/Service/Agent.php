@@ -8,7 +8,11 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Service;
+
+use Psr\Log\LoggerInterface;
 
 /**
  * Class Agent
@@ -18,10 +22,10 @@ namespace Yireo\NewRelic2\Model\Service;
 class Agent
 {
     /**
-     * @param \Psr\Log\LoggerInterface $logger
+     * @param LoggerInterface $logger
      */
     public function __construct(
-        \Psr\Log\LoggerInterface $logger
+        LoggerInterface $logger
     )
     {
         $this->logger = $logger;

@@ -7,6 +7,7 @@
  * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Block\Rum\Timing;
 

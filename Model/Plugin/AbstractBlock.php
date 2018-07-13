@@ -8,7 +8,12 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Plugin;
+use Magento\Framework\View\Element\AbstractBlock as CoreAbstractBlock;
+use Yireo\NewRelic2\Helper\Data;
+use Yireo\NewRelic2\Model\Service\Agent;
 
 /**
  * Class AbstractBlock
@@ -18,22 +23,22 @@ namespace Yireo\NewRelic2\Model\Plugin;
 class AbstractBlock
 {
     /**
-     * @var \Yireo\NewRelic2\Model\Service\Agent
+     * @var Agent
      */
     private $agent;
 
     /**
-     * @var \Yireo\NewRelic2\Helper\Data
+     * @var Data
      */
     private $helper;
 
     /**
-     * @param \Yireo\NewRelic2\Model\Service\Agent $agent
-     * @param \Yireo\NewRelic2\Helper\Data $helper
+     * @param Agent $agent
+     * @param Data $helper
      */
     public function __construct(
-        \Yireo\NewRelic2\Model\Service\Agent $agent,
-        \Yireo\NewRelic2\Helper\Data $helper
+        Agent $agent,
+        Data $helper
     )
     {
         $this->agent = $agent;
@@ -41,12 +46,12 @@ class AbstractBlock
     }
 
     /**
-     * @param \Magento\Framework\View\Element\AbstractBlock $subject
+     * @param CoreAbstractBlock $subject
      * @param $result
      *
      * @return mixed
      */
-    public function afterToHtml(\Magento\Framework\View\Element\AbstractBlock $subject, $result)
+    public function afterToHtml(CoreAbstractBlock $subject, $result)
     {
         if ($this->helper->isEnabled()) {
             $this->agent->addCustomParameter('block::'.$subject->getNameInLayout(), 1);

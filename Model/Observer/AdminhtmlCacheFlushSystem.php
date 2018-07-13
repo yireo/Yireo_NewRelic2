@@ -8,27 +8,39 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Observer;
 
-class AdminhtmlCacheFlushSystem implements \Magento\Framework\Event\ObserverInterface
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
+use Yireo\NewRelic2\Helper\Data;
+use Yireo\NewRelic2\Model\Service\Agent;
+
+/**
+ * Class AdminhtmlCacheFlushSystem
+ *
+ * @package Yireo\NewRelic2\Model\Observer
+ */
+class AdminhtmlCacheFlushSystem implements ObserverInterface
 {
     /**
-     * @var \Yireo\NewRelic2\Model\Service\Agent
+     * @var Agent
      */
     protected $agent;
 
     /**
-     * @var \Yireo\NewRelic2\Helper\Data
+     * @var Data
      */
     protected $helper;
 
     /**
-     * @param \Yireo\NewRelic2\Model\Service\Agent $agent
-     * @param \Yireo\NewRelic2\Helper\Data $helper
+     * @param Agent $agent
+     * @param Data $helper
      */
     public function __construct(
-        \Yireo\NewRelic2\Model\Service\Agent $agent,
-        \Yireo\NewRelic2\Helper\Data $helper
+        Agent $agent,
+        Data $helper
     )
     {
         $this->agent = $agent;
@@ -38,10 +50,10 @@ class AdminhtmlCacheFlushSystem implements \Magento\Framework\Event\ObserverInte
     /**
      * Listen to the event adminhtml_cache_flush_system
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param Observer $observer
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(Observer $observer)
     {
         if (!$this->helper->isEnabled()) {
             return $this;

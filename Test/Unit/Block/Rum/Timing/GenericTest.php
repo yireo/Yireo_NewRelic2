@@ -11,13 +11,14 @@
 namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class GenericTest
  *
  * @package Yireo\NewRelic2\Test\Unit\Block\Rum\Timing
  */
-class GenericTest extends \PHPUnit_Framework_TestCase
+class GenericTest extends TestCase
 {
     /**
      * @var \Yireo\NewRelic2\Block\Rum\Timing\Generic

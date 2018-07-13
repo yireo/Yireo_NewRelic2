@@ -8,29 +8,37 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Helper;
+
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\State;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Store\Model\ScopeInterface;
 
 /**
  * Class Data
  *
  * @package Yireo\NewRelic2\Helper
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
-     * @var \Magento\Framework\App\State
+     * @var State
      */
     protected $appState;
 
     /**
      * Constructor
      *
-     * @param \Magento\Framework\App\Helper\Context $context
-     * @param \Magento\Framework\App\State $appState
+     * @param Context $context
+     * @param State $appState
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\App\State $appState
+        Context $context,
+        State $appState
     )
     {
         $this->appState = $appState;
@@ -87,6 +95,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      * Check whether the current area is the admin area
      *
      * @return bool
+     * @throws LocalizedException
      */
     public function isAdmin()
     {
@@ -159,7 +168,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ScopeInterface::SCOPE_STORE
         );
 
         if (empty($value)) {
@@ -181,7 +190,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $value = $this->scopeConfig->getValue(
             'newrelic2/settings/' . $key,
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE
+            ScopeInterface::SCOPE_STORE
         );
 
         if (empty($value)) {

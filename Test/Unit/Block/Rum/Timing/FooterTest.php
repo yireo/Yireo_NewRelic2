@@ -11,6 +11,7 @@
 namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Class FooterTest
@@ -18,7 +19,7 @@ use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHe
  * @package Yireo\NewRelic2\Test\Unit\Block\Rum\Timing
  * @covers \Yireo\NewRelic2\Block\Rum\Timing\Footer
  */
-class FooterTest extends \PHPUnit_Framework_TestCase
+class FooterTest extends TestCase
 {
     /**
      * @var \Yireo\NewRelic2\Block\Rum\Timing\Footer

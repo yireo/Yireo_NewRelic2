@@ -7,20 +7,30 @@
  * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Test\Unit\Helper;
 
+use InvalidArgumentException;
+use Magento\Backend\App\Area\FrontNameResolver;
+use Magento\Framework\App\Bootstrap;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\Helper\Context;
+use Magento\Framework\App\State;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Yireo\NewRelic2\Helper\Data;
 
 /**
  * Class DataTest
  *
  * @package Yireo\NewRelic2\Test\Unit\Helper
  */
-class DataTest extends \PHPUnit_Framework_TestCase
+class DataTest extends TestCase
 {
     /**
-     * @var \Yireo\NewRelic2\Helper\Data
+     * @var Data
      */
     protected $targetHelper;
 
@@ -38,13 +48,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
         $context = $this->_getContextStub();
         $appState = $this->_getAppStateStub();
-        $this->targetHelper = new \Yireo\NewRelic2\Helper\Data($context, $appState);
-
-        //$this->targetHelper = $this->objectManagerHelper->getObject('\Yireo\NewRelic2\Helper\Data');
-
-        //if (!(extension_loaded('newrelic'))) {
-        //    $this->markTestSkipped('The NewRelic extension is not available.');
-        //}
+        $this->targetHelper = new Data($context, $appState);
     }
 
     /**
@@ -125,49 +129,20 @@ class DataTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAdmin()
     {
-        $bootstrap = \Magento\Framework\App\Bootstrap::create(BP, $_SERVER);
-
-        /** @var \Magento\Framework\App\Http $app */
-        /*
-        $bootstrap->createApplication('Magento\Framework\App\Http');
-
-        $objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-        $appState  = $objectManager->get('Magento\Framework\App\State');
-        $backendAreaCode = \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE;
-        $appState->setAreaCode($backendAreaCode);
-
-        $this->getMockBuilder($appState)
-        $appState = $this->createMock(\Magento\Framework\App\State::class);
-
-        $appState->method('getAreaCode')
-            ->willReturn(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE);
-
-        $appState = $this->getMockBuilder(\Magento\Framework\App\State::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getAreaCode'])
-            ->getMock();
-
-        $appState->expects($this->once())
-            ->method('getAreaCode')
-            ->with($this->equalTo(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE));
-
-        */
-
         $this->assertTrue($this->targetHelper->isAdmin());
     }
 
     /**
      * Get a stub for the $appState object
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function _getAppStateStub()
     {
-        // @todo: Rewrite to getMockObject()
-        $appState = $this->getMock(
-            'Magento\Framework\App\State',
+        $appState = $this->createMock(
+            State::class,
             ['getAreacode'],
-            [\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE],
+            [FrontNameResolver::AREA_CODE],
             '',
             false,
             false
@@ -175,7 +150,7 @@ class DataTest extends \PHPUnit_Framework_TestCase
 
         $appState->expects($this->any())
             ->method('getAreaCode')
-            ->will($this->returnValue(\Magento\Backend\App\Area\FrontNameResolver::AREA_CODE)
+            ->will($this->returnValue(FrontNameResolver::AREA_CODE)
             );
 
         return $appState;
@@ -184,15 +159,14 @@ class DataTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $context parameter of the helper
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function _getContextStub()
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
-        // @todo: Rewrite to getMockObject()
-        $context = $this->getMock(
-            'Magento\Framework\App\Helper\Context',
+        $context = $this->createMock(
+            Context::class,
             ['getScopeConfig'],
             [],
             '',
@@ -211,11 +185,11 @@ class DataTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a stub for the $scopeConfig with a $context
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function _getScopeConfigStub()
     {
-        $scopeConfig = $this->getMock('Magento\Framework\App\Config\ScopeConfigInterface');
+        $scopeConfig = $this->createMock(ScopeConfigInterface::class);
 
         $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
 
@@ -246,6 +220,6 @@ class DataTest extends \PHPUnit_Framework_TestCase
             return $defaultConfig[$hashName];
         }
 
-        throw new \InvalidArgumentException('Unknown id = ' . $hashName);
+        throw new InvalidArgumentException('Unknown id = ' . $hashName);
     }
 }

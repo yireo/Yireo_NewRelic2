@@ -8,17 +8,28 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Model\Observer;
 
-class ControllerActionPostdispatch extends \Yireo\NewRelic2\Model\Observer
+use Magento\Framework\Event\Observer as CoreObserver;
+use Yireo\NewRelic2\Model\Observer;
+
+/**
+ * Class ControllerActionPostdispatch
+ *
+ * @package Yireo\NewRelic2\Model\Observer
+ */
+class ControllerActionPostdispatch extends Observer
 {
     /**
      * Post dispatch observer for user tracking
      *
-     * @param \Magento\Framework\Event\Observer $observer
+     * @param CoreObserver $observer
+     *
      * @return $this
      */
-    public function execute(\Magento\Framework\Event\Observer $observer)
+    public function execute(CoreObserver $observer)
     {
         if (!$this->helper->isEnabled()) {
             return $this;

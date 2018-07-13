@@ -7,24 +7,29 @@
  * @copyright   Copyright 2015 Yireo (https://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Block\Rum\Timing;
+
+use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\View\Element\Context;
+use Yireo\NewRelic2\Helper\Data;
 
 /**
  * Class Generic
  *
  * @package Yireo\NewRelic2\Block\Rum\Timing
  */
-class Generic extends \Magento\Framework\View\Element\AbstractBlock
+class Generic extends AbstractBlock
 {
     /**
      * Constructor
      *
-     * @param \Magento\Framework\View\Element\Context $context
+     * @param Context $context
      * @param array $data
-     * @param \Yireo\NewRelic2\Helper\Data
+     * @param Data
      */
-    public function __construct(\Magento\Framework\View\Element\Context $context, array $data = [], \Yireo\NewRelic2\Helper\Data $helper)
+    public function __construct(Context $context, array $data = [], Data $helper)
     {
         $rt = parent::__construct($context, $data);
 
@@ -41,7 +46,7 @@ class Generic extends \Magento\Framework\View\Element\AbstractBlock
     }
 
     /**
-     * @return \Yireo\NewRelic2\Helper\Data
+     * @return Data
      */
     protected function _getHelper()
     {

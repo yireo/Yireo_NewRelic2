@@ -8,8 +8,15 @@
  * @license     Simplified BSD License
  */
 
+declare(strict_types=1);
+
 namespace Yireo\NewRelic2\Block\Rum\Timing;
 
+/**
+ * Class Header
+ *
+ * @package Yireo\NewRelic2\Block\Rum\Timing
+ */
 class Header extends Generic
 {
     public function getContentHtml()
