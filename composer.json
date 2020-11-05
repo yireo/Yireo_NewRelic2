@@ -2,7 +2,7 @@
     "name": "yireo/magento2-newrelic2",
     "license": "BSD-2-Clause",
     "type": "magento2-module",
-    "version": "0.3.4",
+    "version": "0.3.5",
     "homepage": "https://www.yireo.com/software/magento-extensions/newrelic",
     "description": "Add NewRelic JS support and PHP tracking to Magento",
     "keywords":[ "composer-installer", "magento"],
