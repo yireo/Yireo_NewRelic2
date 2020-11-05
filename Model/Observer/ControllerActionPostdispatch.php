@@ -42,8 +42,8 @@ class ControllerActionPostdispatch extends Observer
 
         // Get customer-data
         $customer = $this->customerSession->getCustomer();
-        $customerName = trim($customer->getName());
-        $customerEmail = trim($customer->getEmail());
+        $customerName = trim((string) $customer->getName());
+        $customerEmail = trim((string) $customer->getEmail());
 
         // Correct empty values
         if (empty($customerName)) {

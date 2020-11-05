@@ -102,7 +102,7 @@ class Agent
         $this->debug('Calling setNameTransaction', array($name));
 
         if ($this->functionExists('newrelic_name_transaction')) {
-            newrelic_name_transaction($name);
+            newrelic_name_transaction((string) $name);
         }
     }
 
