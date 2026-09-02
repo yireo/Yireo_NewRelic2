@@ -1,0 +1,8 @@
+{
+    "module_name": "Yireo_NewRelic2",
+    "composer_name": "yireo/magento2-newrelic2",
+    "sequence": [
+        "Magento_Backend",
+        "Magento_Store"
+    ]
+}
