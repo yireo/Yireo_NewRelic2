@@ -60,5 +60,7 @@ class Crontab implements ObserverInterface
         }
 
         $this->agent->setBackgroundJob(true);
+
+        return $this;
     }
 }

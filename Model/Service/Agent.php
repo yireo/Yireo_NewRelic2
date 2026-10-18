@@ -22,6 +22,11 @@ use Psr\Log\LoggerInterface;
 class Agent
 {
     /**
+     * @var LoggerInterface
+     */
+    private LoggerInterface $logger;
+
+    /**
      * @param LoggerInterface $logger
      */
     public function __construct(

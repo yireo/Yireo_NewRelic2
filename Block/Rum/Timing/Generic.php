@@ -23,26 +23,30 @@ use Yireo\NewRelic2\Helper\Data;
 class Generic extends AbstractBlock
 {
     /**
+     * @var Data
+     */
+    protected Data $helper;
+
+    /**
      * Constructor
      *
      * @param Context $context
+     * @param Data $helper
      * @param array $data
-     * @param Data
      */
-    public function __construct(Context $context, array $data = [], Data $helper)
+    public function __construct(Context $context, Data $helper, array $data = [])
     {
-        $rt = parent::__construct($context, $data);
-
         $this->helper = $helper;
 
-        return $rt;
+        parent::__construct($context, $data);
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getContentHtml()
     {
+        return '';
     }
 
     /**
