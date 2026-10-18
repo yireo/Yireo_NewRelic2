@@ -60,11 +60,11 @@ class Agent
     {
         $this->debug('Calling addCustomerParameter', array($name, $value));
 
-        if ($this->functionExists('newrelic_custom_parameter') == false) {
+        if ($this->functionExists('newrelic_add_custom_parameter') == false) {
             return false;
         }
 
-        newrelic_custom_parameter($name, $value);
+        newrelic_add_custom_parameter($name, $value);
 
         return true;
     }
