@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Test\Unit\Model\Service;
 
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -25,17 +24,10 @@ class AgentTest extends TestCase
     protected $targetModel;
 
     /**
-     * @var ObjectManagerHelper
-     */
-    protected $objectManagerHelper;
-
-    /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->objectManagerHelper = new ObjectManagerHelper($this);
-
         $logger = $this->_getLoggerStub();
         $this->targetModel = new Agent($logger);
     }
@@ -47,15 +39,10 @@ class AgentTest extends TestCase
      */
     protected function _getLoggerStub()
     {
-        $logger = $this->createMock(LoggerInterface::class);
-
-        $logger->expects($this->any())->method('debug')->will($this->returnValue(true));
-
-        return $logger;
+        return $this->createMock(LoggerInterface::class);
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Model\Service\Agent::addCustomMetric
      */
     public function testAddCustomMetric()
@@ -68,12 +55,11 @@ class AgentTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Model\Service\Agent::addCustomParameter
      */
     public function testAddCustomParameter()
     {
-        if ($this->targetModel->functionExists('newrelic_custom_parameter')) {
+        if ($this->targetModel->functionExists('newrelic_add_custom_parameter')) {
             $this->assertTrue($this->targetModel->addCustomParameter('foo', 'bar'));
         } else {
             $this->assertFalse($this->targetModel->addCustomParameter('foo', 'bar'));
@@ -81,7 +67,6 @@ class AgentTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Model\Service\Agent::functionExists
      */
     public function testFunctionExists()

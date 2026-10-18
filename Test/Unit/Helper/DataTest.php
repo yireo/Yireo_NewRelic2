@@ -13,11 +13,9 @@ namespace Yireo\NewRelic2\Test\Unit\Helper;
 
 use InvalidArgumentException;
 use Magento\Backend\App\Area\FrontNameResolver;
-use Magento\Framework\App\Bootstrap;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\State;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yireo\NewRelic2\Helper\Data;
@@ -35,24 +33,16 @@ class DataTest extends TestCase
     protected $targetHelper;
 
     /**
-     * @var ObjectManagerHelper
-     */
-    protected $objectManagerHelper;
-
-    /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->objectManagerHelper = new ObjectManagerHelper($this);
-
         $context = $this->_getContextStub();
         $appState = $this->_getAppStateStub();
         $this->targetHelper = new Data($context, $appState);
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isEnabled
      */
     public function testIsEnabled()
@@ -61,7 +51,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isDebug
      */
     public function testIsDebug()
@@ -70,7 +59,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::getAppName
      */
     public function testGetAppName()
@@ -79,7 +67,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::getLicense
      */
     public function testGetLicense()
@@ -88,7 +75,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isUseXmit
      */
     public function testIsUseXmit()
@@ -97,7 +83,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isTrackController
      */
     public function testIsTrackController()
@@ -106,7 +91,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isUseRUM
      */
     public function testIsUseRUM()
@@ -115,7 +99,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::getConfigValue
      */
     public function testGetConfigValue()
@@ -124,7 +107,6 @@ class DataTest extends TestCase
     }
 
     /**
-     * @test
      * @covers \Yireo\NewRelic2\Helper\Data::isAdmin
      */
     public function testIsAdmin()
@@ -139,19 +121,8 @@ class DataTest extends TestCase
      */
     protected function _getAppStateStub()
     {
-        $appState = $this->createMock(
-            State::class,
-            ['getAreacode'],
-            [FrontNameResolver::AREA_CODE],
-            '',
-            false,
-            false
-        );
-
-        $appState->expects($this->any())
-            ->method('getAreaCode')
-            ->will($this->returnValue(FrontNameResolver::AREA_CODE)
-            );
+        $appState = $this->createMock(State::class);
+        $appState->method('getAreaCode')->willReturn(FrontNameResolver::AREA_CODE);
 
         return $appState;
     }
@@ -165,19 +136,8 @@ class DataTest extends TestCase
     {
         $scopeConfig = $this->_getScopeConfigStub();
 
-        $context = $this->createMock(
-            Context::class,
-            ['getScopeConfig'],
-            [],
-            '',
-            false,
-            false
-        );
-
-        $context->expects($this->any())
-            ->method('getScopeConfig')
-            ->will($this->returnValue($scopeConfig)
-            );
+        $context = $this->createMock(Context::class);
+        $context->method('getScopeConfig')->willReturn($scopeConfig);
 
         return $context;
     }
@@ -191,7 +151,7 @@ class DataTest extends TestCase
     {
         $scopeConfig = $this->createMock(ScopeConfigInterface::class);
 
-        $scopeConfig->expects($this->any())->method('getValue')->will($this->returnCallback([$this, 'getScopeConfigMethodStub']));
+        $scopeConfig->method('getValue')->willReturnCallback([$this, 'getScopeConfigMethodStub']);
 
         return $scopeConfig;
     }

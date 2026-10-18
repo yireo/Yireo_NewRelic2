@@ -7,72 +7,52 @@
  * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use Magento\Framework\View\Element\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Yireo\NewRelic2\Block\Rum\Timing\Header;
+use Yireo\NewRelic2\Helper\Data;
 
+/**
+ * @covers \Yireo\NewRelic2\Block\Rum\Timing\Header
+ */
 class HeaderTest extends TestCase
 {
     /**
-     * @var \Yireo\NewRelic2\Block\Rum\Timing\Header
+     * @var Header
      */
     protected $targetBlock;
 
     /**
-     * @var ObjectManagerHelper
-     */
-    protected $objectManagerHelper;
-
-    /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->objectManagerHelper = new ObjectManagerHelper($this);
-
-        $context = $this->_getContextStub();
-        $helper = $this->_getHelperStub();
-        $data = [];
-
-        $this->targetBlock = new \Yireo\NewRelic2\Block\Rum\Timing\Header($context, $data, $helper);
+        $this->targetBlock = new Header($this->getContextStub(), $this->getHelperStub(), []);
     }
 
-    /**
-     * @test
-     * @covers \Yireo\NewRelic2\Block\Rum\Timing\Header::getContentHtml
-     */
     public function testGetContentHtml()
     {
         $this->assertEmpty($this->targetBlock->getContentHtml());
     }
-    
-    /**
-     * Get a stub for the helper
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function _getHelperStub()
-    {
-        $helper = $this->getMockBuilder('Yireo\NewRelic2\Helper\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
 
-        return $helper;
+    /**
+     * @return Data&MockObject
+     */
+    protected function getHelperStub()
+    {
+        return $this->createMock(Data::class);
     }
 
     /**
-     * Get a stub for the context
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return Context&MockObject
      */
-    protected function _getContextStub()
+    protected function getContextStub()
     {
-        $context = $this->getMockBuilder('Magento\Framework\View\Element\Context')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $context;
+        return $this->createMock(Context::class);
     }
 }

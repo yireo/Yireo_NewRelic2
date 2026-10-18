@@ -7,94 +7,65 @@
  * @copyright   Copyright 2015 Yireo (http://www.yireo.com/)
  * @license     Simplified BSD License
  */
+declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager as ObjectManagerHelper;
+use Magento\Framework\View\Element\Context;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use Yireo\NewRelic2\Block\Rum\Timing\Generic;
+use Yireo\NewRelic2\Helper\Data;
 
 /**
- * Class GenericTest
- *
- * @package Yireo\NewRelic2\Test\Unit\Block\Rum\Timing
+ * @covers \Yireo\NewRelic2\Block\Rum\Timing\Generic
  */
 class GenericTest extends TestCase
 {
     /**
-     * @var \Yireo\NewRelic2\Block\Rum\Timing\Generic
+     * @var Generic
      */
     protected $targetBlock;
 
     /**
-     * @var ObjectManagerHelper
-     */
-    protected $objectManagerHelper;
-
-    /**
      * Setup method
      */
-    protected function setUp()
+    protected function setUp(): void
     {
-        $this->objectManagerHelper = new ObjectManagerHelper($this);
-
-        $context = $this->_getContextStub();
-        $helper = $this->_getHelperStub();
-        $data = [];
-
-        $this->targetBlock = new \Yireo\NewRelic2\Block\Rum\Timing\Generic($context, $data, $helper);
+        $this->targetBlock = new Generic($this->getContextStub(), $this->getHelperStub(), []);
     }
 
-    /**
-     * @test
-     * @covers \Yireo\NewRelic2\Block\Rum\Timing\Generic::getContentHtml
-     */
+    public function testGetContentHtml()
+    {
+        $this->assertSame('', $this->targetBlock->getContentHtml());
+    }
+
     public function testCanShow()
     {
-        $context = $this->_getContextStub();
-        $helper = $this->_getHelperStub();
-        $data = [];
-        $instanceArgs = [$context, $data, $helper];
-
-        $class = new \ReflectionClass('Yireo\NewRelic2\Block\Rum\Timing\Generic');
-        $instance = $class->newInstanceArgs($instanceArgs);
-        $method = $class->getMethod('_canShow');
-        $method->setAccessible(true);
-        $result = $method->invokeArgs($this->targetBlock, []);
+        $method = (new ReflectionClass(Generic::class))->getMethod('_canShow');
+        $result = $method->invoke($this->targetBlock);
 
         $this->assertTrue($result);
     }
-    
+
     /**
-     * Get a stub for the helper
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return Data&MockObject
      */
-    protected function _getHelperStub()
+    protected function getHelperStub()
     {
-        $helper = $this->getMockBuilder('Yireo\NewRelic2\Helper\Data')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $helper->method('isEnabled')
-             ->willReturn(true);
-
-        $helper->method('isUseRUM')
-             ->willReturn(true);
+        $helper = $this->createMock(Data::class);
+        $helper->method('isEnabled')->willReturn(true);
+        $helper->method('isUseRUM')->willReturn(true);
 
         return $helper;
     }
 
     /**
-     * Get a stub for the context
-     *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return Context&MockObject
      */
-    protected function _getContextStub()
+    protected function getContextStub()
     {
-        $context = $this->getMockBuilder('Magento\Framework\View\Element\Context')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $context;
+        return $this->createMock(Context::class);
     }
 }
