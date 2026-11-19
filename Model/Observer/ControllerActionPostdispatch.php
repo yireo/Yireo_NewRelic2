@@ -38,7 +38,7 @@ class ControllerActionPostdispatch extends Observer
         // Set generic data
         $this->agent->addCustomParameter('magento_controller', $this->request->getControllerModule());
         $this->agent->addCustomParameter('magento_request', $this->request->getRequestUri());
-        $this->agent->addCustomParameter('magento_store_id', $this->store->getId());
+        $this->agent->addCustomParameter('magento_store_id', $this->storeManager->getStore()->getId());
 
         // Get customer-data
         $customer = $this->customerSession->getCustomer();

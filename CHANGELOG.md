@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - Remove PHP dep from composer
+- Fix `magento_store_id` custom parameter being empty by reading the current store from the store manager
 
 ## [0.3.5] - 5 November 2020
 ### Fixed
