@@ -3,6 +3,8 @@
     "composer_name": "yireo/magento2-newrelic2",
     "sequence": [
         "Magento_Backend",
+        "Magento_Config",
+        "Magento_Customer",
         "Magento_Store"
     ],
     "phpcs_severity": "9",
