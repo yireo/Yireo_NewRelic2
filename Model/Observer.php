@@ -117,8 +117,8 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
     protected function _setupAppName() 
     {
         $helper = $this->helper;
-        $appName = trim($helper->getAppName());
-        $license = trim($helper->getLicense());
+        $appName = trim((string) $helper->getAppName(), " \f\n\r\t\v\x00");
+        $license = trim((string) $helper->getLicense(), " \f\n\r\t\v\x00");
         $xmit = $helper->isUseXmit();
 
         $this->agent->setAppName($appName, $license, $xmit);
