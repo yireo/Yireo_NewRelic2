@@ -38,9 +38,9 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
     protected $indexer;
 
     /**
-     * @var \Magento\Store\Model\Store
+     * @var \Magento\Store\Model\StoreManagerInterface
      */
-    protected $store;
+    protected $storeManager;
 
     /**
      * @var \Magento\Customer\Model\Session
@@ -62,7 +62,7 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
      * @param \Yireo\NewRelic2\Helper\Data $helper
      * @param \Magento\Framework\App\RequestInterface $request
      * @param \Magento\Framework\Indexer\IndexerInterface $indexer
-     * @param \Magento\Store\Model\Store $store
+     * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Framework\Registry $registry
      * @param \Psr\Log\LoggerInterface $logger
@@ -72,7 +72,7 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
         \Yireo\NewRelic2\Helper\Data $helper,
         \Magento\Framework\App\RequestInterface $request,
         \Magento\Framework\Indexer\IndexerInterface $indexer,
-        \Magento\Store\Model\Store $store,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Registry $registry,
         \Psr\Log\LoggerInterface $logger
@@ -82,7 +82,7 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
         $this->helper = $helper;
         $this->request = $request;
         $this->indexer = $indexer;
-        $this->store = $store;
+        $this->storeManager = $storeManager;
         $this->customerSession = $customerSession;
         $this->registry = $registry;
         $this->logger = $logger;
