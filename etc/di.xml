@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Magento\Framework\View\Element\AbstractBlock">
-        <plugin name="newrelic2-abstractblock" type="Yireo\NewRelic2\Model\Plugin\AbstractBlock" sortOrder="1"/>
+    <type name="Magento\Config\Model\Config\TypePool">
+        <arguments>
+            <argument name="sensitive" xsi:type="array">
+                <item name="newrelic2/settings/license" xsi:type="string">1</item>
+            </argument>
+        </arguments>
     </type>
 </config>

@@ -7,6 +7,9 @@
                 <track_controller>1</track_controller>
                 <real_user_monitoring>0</real_user_monitoring>
                 <xmit>1</xmit>
+                <send_customer_id>0</send_customer_id>
+                <track_blocks>0</track_blocks>
+                <track_models>0</track_models>
                 <debug>0</debug>
             </settings>
         </newrelic2>

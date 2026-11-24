@@ -16,6 +16,7 @@ use Magento\Backend\App\Area\FrontNameResolver;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\State;
+use Magento\Framework\Encryption\EncryptorInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yireo\NewRelic2\Helper\Data;
@@ -33,13 +34,35 @@ class DataTest extends TestCase
     protected $targetHelper;
 
     /**
+     * @var array
+     */
+    private array $config = [];
+
+    /**
      * Setup method
      */
     protected function setUp(): void
     {
-        $context = $this->_getContextStub();
-        $appState = $this->_getAppStateStub();
-        $this->targetHelper = new Data($context, $appState);
+        $this->config = [
+            'newrelic2/settings/enabled' => '1',
+            'newrelic2/settings/appname' => 'dummy_appname',
+            'newrelic2/settings/license' => 'dummy_license',
+            'newrelic2/settings/xmit' => '1',
+            'newrelic2/settings/track_controller' => '1',
+            'newrelic2/settings/real_user_monitoring' => '1',
+            'newrelic2/settings/send_customer_id' => '0',
+            'newrelic2/settings/track_blocks' => '0',
+            'newrelic2/settings/track_models' => '0',
+            'newrelic2/settings/fake_module' => '1',
+            'newrelic2/settings/debug' => '1',
+        ];
+
+        $encryptor = $this->createMock(EncryptorInterface::class);
+        $encryptor->method('decrypt')->willReturnCallback(
+            fn ($value) => $value === '0:3:encrypted' ? 'decrypted_license' : ''
+        );
+
+        $this->targetHelper = new Data($this->_getContextStub(), $this->_getAppStateStub(), $encryptor);
     }
 
     /**
@@ -72,6 +95,42 @@ class DataTest extends TestCase
     public function testGetLicense()
     {
         $this->assertEquals($this->targetHelper->getLicense(), 'dummy_license');
+    }
+
+    /**
+     * @covers \Yireo\NewRelic2\Helper\Data::getLicense
+     */
+    public function testGetLicenseDecryptsEncryptedValue()
+    {
+        $this->config['newrelic2/settings/license'] = '0:3:encrypted';
+        $this->assertSame('decrypted_license', $this->targetHelper->getLicense());
+    }
+
+    /**
+     * @covers \Yireo\NewRelic2\Helper\Data::getLicense
+     */
+    public function testGetLicenseReturnsEmptyStringWithoutValue()
+    {
+        $this->config['newrelic2/settings/license'] = null;
+        $this->assertSame('', $this->targetHelper->getLicense());
+    }
+
+    public function testNewTrackingOptionsAreDisabledByDefault()
+    {
+        $this->assertFalse($this->targetHelper->isSendCustomerId());
+        $this->assertFalse($this->targetHelper->isTrackBlocks());
+        $this->assertFalse($this->targetHelper->isTrackModels());
+    }
+
+    public function testNewTrackingOptionsCanBeEnabled()
+    {
+        $this->config['newrelic2/settings/send_customer_id'] = '1';
+        $this->config['newrelic2/settings/track_blocks'] = '1';
+        $this->config['newrelic2/settings/track_models'] = '1';
+
+        $this->assertTrue($this->targetHelper->isSendCustomerId());
+        $this->assertTrue($this->targetHelper->isTrackBlocks());
+        $this->assertTrue($this->targetHelper->isTrackModels());
     }
 
     /**
@@ -165,19 +224,8 @@ class DataTest extends TestCase
      */
     public function getScopeConfigMethodStub($hashName)
     {
-        $defaultConfig = [
-            'newrelic2/settings/enabled' => '1',
-            'newrelic2/settings/appname' => 'dummy_appname',
-            'newrelic2/settings/license' => 'dummy_license',
-            'newrelic2/settings/xmit' => '1',
-            'newrelic2/settings/track_controller' => '1',
-            'newrelic2/settings/real_user_monitoring' => '1',
-            'newrelic2/settings/fake_module' => '1',
-            'newrelic2/settings/debug' => '1',
-        ];
-
-        if (array_key_exists($hashName, $defaultConfig)) {
-            return $defaultConfig[$hashName];
+        if (array_key_exists($hashName, $this->config)) {
+            return $this->config[$hashName];
         }
 
         throw new InvalidArgumentException('Unknown id = ' . $hashName);

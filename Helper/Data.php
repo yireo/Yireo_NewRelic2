@@ -15,6 +15,7 @@ namespace Yireo\NewRelic2\Helper;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\App\State;
+use Magento\Framework\Encryption\EncryptorInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\ScopeInterface;
 
@@ -31,17 +32,25 @@ class Data extends AbstractHelper
     protected $appState;
 
     /**
+     * @var EncryptorInterface
+     */
+    private EncryptorInterface $encryptor;
+
+    /**
      * Constructor
      *
      * @param Context $context
      * @param State $appState
+     * @param EncryptorInterface $encryptor
      */
     public function __construct(
         Context $context,
-        State $appState
+        State $appState,
+        EncryptorInterface $encryptor
     )
     {
         $this->appState = $appState;
+        $this->encryptor = $encryptor;
 
         parent::__construct($context);
     }
@@ -123,7 +132,12 @@ class Data extends AbstractHelper
      */
     public function getLicense()
     {
-        return $this->getConfigValue('license');
+        $license = (string)$this->getConfigValue('license');
+        if (!preg_match('/^\d+:\d+:/', $license)) {
+            return $license;
+        }
+
+        return (string)$this->encryptor->decrypt($license);
     }
 
     /**
@@ -154,6 +168,36 @@ class Data extends AbstractHelper
     public function isUseRUM()
     {
         return $this->getConfigFlag('real_user_monitoring');
+    }
+
+    /**
+     * Return whether to send the customer ID
+     *
+     * @return bool
+     */
+    public function isSendCustomerId()
+    {
+        return $this->getConfigFlag('send_customer_id');
+    }
+
+    /**
+     * Return whether to track rendered blocks
+     *
+     * @return bool
+     */
+    public function isTrackBlocks()
+    {
+        return $this->getConfigFlag('track_blocks');
+    }
+
+    /**
+     * Return whether to track model saves and deletes
+     *
+     * @return bool
+     */
+    public function isTrackModels()
+    {
+        return $this->getConfigFlag('track_models');
     }
 
     /**
