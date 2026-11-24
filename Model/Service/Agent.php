@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Yireo\NewRelic2\Model\Service;
 
 use Psr\Log\LoggerInterface;
+use Yireo\NewRelic2\Helper\Data;
 
 /**
  * Class Agent
@@ -27,13 +28,21 @@ class Agent
     private LoggerInterface $logger;
 
     /**
+     * @var Data
+     */
+    private Data $helper;
+
+    /**
      * @param LoggerInterface $logger
+     * @param Data $helper
      */
     public function __construct(
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        Data $helper
     )
     {
         $this->logger = $logger;
+        $this->helper = $helper;
     }
 
     /**
@@ -118,8 +127,7 @@ class Agent
      */
     public function setAppName($name, $license, $xmit)
     {
-        $parameters = func_get_args();
-        $this->debug('Calling setAppName', $parameters);
+        $this->debug('Calling setAppName', [$name, $xmit]);
 
         if (!empty($name) && $this->functionExists('newrelic_set_appname')) {
             newrelic_set_appname($name, $license, $xmit);
@@ -142,6 +150,10 @@ class Agent
      */
     public function debug($string, $variables = null)
     {
+        if ($this->helper->isDebug() === false) {
+            return;
+        }
+
         if (!empty($variables))
         {
             $string .= var_export($variables, true);
