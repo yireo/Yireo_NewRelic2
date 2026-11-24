@@ -27,12 +27,6 @@ class Footer extends Generic
             return '';
         }
 
-        $html = newrelic_get_browser_timing_footer(true);
-
-        if($this->helper->isDebug()) {
-            $html .= '<!-- newrelic_get_browser_timing_footer() -->';
-        }
-
-        return $html;
+        return $this->renderScript((string)newrelic_get_browser_timing_footer(false));
     }
 }

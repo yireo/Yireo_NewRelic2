@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Yireo\NewRelic2\Test\Unit\Block\Rum\Timing;
 
 use Magento\Framework\View\Element\Context;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Yireo\NewRelic2\Block\Rum\Timing\Footer;
@@ -32,7 +33,7 @@ class FooterTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->targetBlock = new Footer($this->getContextStub(), $this->getHelperStub(), []);
+        $this->targetBlock = new Footer($this->getContextStub(), $this->getHelperStub(), $this->createMock(SecureHtmlRenderer::class), []);
     }
 
     public function testGetContentHtml()

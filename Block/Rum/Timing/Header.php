@@ -25,12 +25,6 @@ class Header extends Generic
             return '';
         }
 
-        $html = newrelic_get_browser_timing_header(true);
-
-        if($this->helper->isDebug()) {
-            $html .= '<!-- newrelic_get_browser_timing_header() -->';
-        }
-
-        return $html;
+        return $this->renderScript((string)newrelic_get_browser_timing_header(false));
     }
 }

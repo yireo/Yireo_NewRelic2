@@ -13,6 +13,7 @@ namespace Yireo\NewRelic2\Block\Rum\Timing;
 
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Context;
+use Magento\Framework\View\Helper\SecureHtmlRenderer;
 use Yireo\NewRelic2\Helper\Data;
 
 /**
@@ -28,15 +29,26 @@ class Generic extends AbstractBlock
     protected Data $helper;
 
     /**
+     * @var SecureHtmlRenderer
+     */
+    protected SecureHtmlRenderer $secureHtmlRenderer;
+
+    /**
      * Constructor
      *
      * @param Context $context
      * @param Data $helper
+     * @param SecureHtmlRenderer $secureHtmlRenderer
      * @param array $data
      */
-    public function __construct(Context $context, Data $helper, array $data = [])
-    {
+    public function __construct(
+        Context $context,
+        Data $helper,
+        SecureHtmlRenderer $secureHtmlRenderer,
+        array $data = []
+    ) {
         $this->helper = $helper;
+        $this->secureHtmlRenderer = $secureHtmlRenderer;
 
         parent::__construct($context, $data);
     }
@@ -47,6 +59,19 @@ class Generic extends AbstractBlock
     public function getContentHtml()
     {
         return '';
+    }
+
+    /**
+     * @param string $javascript
+     * @return string
+     */
+    protected function renderScript(string $javascript): string
+    {
+        if (trim($javascript, " \f\n\r\t\v\x00") === '') {
+            return '';
+        }
+
+        return $this->secureHtmlRenderer->renderTag('script', [], $javascript, false);
     }
 
     /**
