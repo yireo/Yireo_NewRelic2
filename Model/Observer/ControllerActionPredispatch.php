@@ -47,11 +47,6 @@ class ControllerActionPredispatch extends Observer
             }
         }
 
-        // Common settings
-        if(function_exists('newrelic_capture_params')) {
-            newrelic_capture_params(true);
-        }
-
         return $this;
     }
 }

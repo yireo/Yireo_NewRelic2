@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Yireo\NewRelic2\Model\Observer;
 
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer as CoreObserver;
 use Yireo\NewRelic2\Model\Observer;
 
@@ -35,30 +36,15 @@ class ControllerActionPostdispatch extends Observer
             return $this;
         }
 
-        // Set generic data
         $this->agent->addCustomParameter('magento_controller', $this->request->getControllerModule());
-        $this->agent->addCustomParameter('magento_request', $this->request->getRequestUri());
+        $this->agent->addCustomParameter('magento_request', $this->getRoute());
         $this->agent->addCustomParameter('magento_store_id', $this->storeManager->getStore()->getId());
 
-        // Get customer-data
-        $customer = $this->customerSession->getCustomer();
-        $customerName = trim((string) $customer->getName(), " \f\n\r\t\v\x00");
-        $customerEmail = trim((string) $customer->getEmail(), " \f\n\r\t\v\x00");
-
-        // Correct empty values
-        if (empty($customerName)) {
-            $customerName = 'guest';
+        $customerId = $this->getCustomerId();
+        if ($this->helper->isSendCustomerId()) {
+            $this->agent->addCustomParameter('magento_customer_id', $customerId);
         }
 
-        if (empty($customerEmail)) {
-            $customerEmail = 'guest';
-        }
-
-        // Set customer-data
-        $this->agent->addCustomParameter('magento_customer_email', $customerEmail);
-        $this->agent->addCustomParameter('magento_customer_name', $customerName);
-
-        // Get and set product-data
         $product = $this->registry->registry('current_product');
 
         if (!empty($product)) {
@@ -77,11 +63,32 @@ class ControllerActionPostdispatch extends Observer
             $this->agent->addCustomParameter('magento_category_id', $category->getId());
         }
 
-        // Set user attributes
-        if ($this->helper->isUseRUM()) {
-            $this->agent->setUserAttributes($customerEmail, $customerName, $productSku);
+        if ($this->helper->isUseRUM() && $this->helper->isSendCustomerId()) {
+            $this->agent->setUserAttributes($customerId, '', (string)$productSku);
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    private function getRoute(): string
+    {
+        if ($this->request instanceof Http) {
+            return (string)$this->request->getFullActionName('/');
+        }
+
+        return (string)$this->request->getModuleName() . '/' . (string)$this->request->getActionName();
+    }
+
+    /**
+     * @return string
+     */
+    private function getCustomerId(): string
+    {
+        $customerId = (int)$this->customerSession->getCustomerId();
+
+        return $customerId > 0 ? (string)$customerId : 'guest';
     }
 }

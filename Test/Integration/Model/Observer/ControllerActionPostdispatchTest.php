@@ -52,6 +52,7 @@ class ControllerActionPostdispatchTest extends TestCase
         $this->assertNotEmpty($currentStoreId);
         $this->assertArrayHasKey('magento_store_id', $parameters);
         $this->assertSame($currentStoreId, $parameters['magento_store_id']);
-        $this->assertSame('guest', $parameters['magento_customer_email']);
+        $this->assertArrayNotHasKey('magento_customer_email', $parameters);
+        $this->assertArrayNotHasKey('magento_customer_id', $parameters);
     }
 }

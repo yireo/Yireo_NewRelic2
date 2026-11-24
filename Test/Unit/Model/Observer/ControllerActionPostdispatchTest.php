@@ -8,7 +8,6 @@ use Magento\Catalog\Model\Product;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\Http;
 use Magento\Framework\Event\Observer as CoreObserver;
-use Magento\Framework\Indexer\IndexerInterface;
 use Magento\Framework\Registry;
 use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
@@ -66,22 +65,49 @@ class ControllerActionPostdispatchTest extends TestCase
         $this->createObserver('1')->execute(new CoreObserver());
     }
 
-    public function testGuestFallbackIsUsedForEmptyCustomerData(): void
+    public function testRouteWithoutQueryStringIsSentAsRequest(): void
     {
         $this->helper->method('isEnabled')->willReturn(true);
-        $this->createObserver('1', ' ', '')->execute(new CoreObserver());
+        $this->createObserver('1')->execute(new CoreObserver());
 
-        $this->assertSame('guest', $this->parameters['magento_customer_name']);
-        $this->assertSame('guest', $this->parameters['magento_customer_email']);
+        $this->assertSame('customer/account/createPassword', $this->parameters['magento_request']);
     }
 
-    public function testCustomerDataIsSent(): void
+    public function testCustomerEmailAndNameAreNeverSent(): void
     {
         $this->helper->method('isEnabled')->willReturn(true);
-        $this->createObserver('1', 'John Doe', 'john@example.com')->execute(new CoreObserver());
+        $this->helper->method('isSendCustomerId')->willReturn(true);
+        $this->createObserver('1', 42)->execute(new CoreObserver());
 
-        $this->assertSame('John Doe', $this->parameters['magento_customer_name']);
-        $this->assertSame('john@example.com', $this->parameters['magento_customer_email']);
+        $this->assertArrayNotHasKey('magento_customer_email', $this->parameters);
+        $this->assertArrayNotHasKey('magento_customer_name', $this->parameters);
+    }
+
+    public function testCustomerIdIsNotSentByDefault(): void
+    {
+        $this->helper->method('isEnabled')->willReturn(true);
+        $this->helper->method('isSendCustomerId')->willReturn(false);
+        $this->createObserver('1', 42)->execute(new CoreObserver());
+
+        $this->assertArrayNotHasKey('magento_customer_id', $this->parameters);
+    }
+
+    public function testCustomerIdIsSentWhenEnabled(): void
+    {
+        $this->helper->method('isEnabled')->willReturn(true);
+        $this->helper->method('isSendCustomerId')->willReturn(true);
+        $this->createObserver('1', 42)->execute(new CoreObserver());
+
+        $this->assertSame('42', $this->parameters['magento_customer_id']);
+    }
+
+    public function testGuestIsSentAsCustomerIdForGuests(): void
+    {
+        $this->helper->method('isEnabled')->willReturn(true);
+        $this->helper->method('isSendCustomerId')->willReturn(true);
+        $this->createObserver('1')->execute(new CoreObserver());
+
+        $this->assertSame('guest', $this->parameters['magento_customer_id']);
     }
 
     public function testProductAndCategoryDataIsSent(): void
@@ -120,61 +146,57 @@ class ControllerActionPostdispatchTest extends TestCase
         $this->assertArrayNotHasKey('magento_category_id', $this->parameters);
     }
 
-    public function testUserAttributesAreSetWhenRumIsEnabled(): void
+    public function testUserAttributesContainOnlyCustomerIdWhenRumAndCustomerIdAreEnabled(): void
     {
         $this->helper->method('isEnabled')->willReturn(true);
         $this->helper->method('isUseRUM')->willReturn(true);
+        $this->helper->method('isSendCustomerId')->willReturn(true);
         $this->agent->expects($this->once())
             ->method('setUserAttributes')
-            ->with('john@example.com', 'John Doe', null);
+            ->with('42', '', '');
 
-        $this->createObserver('1', 'John Doe', 'john@example.com')->execute(new CoreObserver());
+        $this->createObserver('1', 42)->execute(new CoreObserver());
+    }
+
+    public function testUserAttributesAreNotSetWithoutCustomerIdOption(): void
+    {
+        $this->helper->method('isEnabled')->willReturn(true);
+        $this->helper->method('isUseRUM')->willReturn(true);
+        $this->helper->method('isSendCustomerId')->willReturn(false);
+        $this->agent->expects($this->never())->method('setUserAttributes');
+
+        $this->createObserver('1', 42)->execute(new CoreObserver());
     }
 
     public function testUserAttributesAreNotSetWhenRumIsDisabled(): void
     {
         $this->helper->method('isEnabled')->willReturn(true);
         $this->helper->method('isUseRUM')->willReturn(false);
+        $this->helper->method('isSendCustomerId')->willReturn(true);
         $this->agent->expects($this->never())->method('setUserAttributes');
 
         $this->createObserver('1')->execute(new CoreObserver());
     }
 
-    private function createObserver(
-        int|string $storeId,
-        string $customerName = '',
-        string $customerEmail = ''
-    ): ControllerActionPostdispatch {
+    private function createObserver(int|string $storeId, ?int $customerId = null): ControllerActionPostdispatch
+    {
         $store = $this->createMock(StoreInterface::class);
         $store->method('getId')->willReturn($storeId);
         $storeManager = $this->createMock(StoreManagerInterface::class);
         $storeManager->method('getStore')->willReturn($store);
 
-        $customer = new class ($customerName, $customerEmail) {
-            public function __construct(
-                private readonly string $name,
-                private readonly string $email
-            ) {
-            }
-
-            public function getName(): string
-            {
-                return $this->name;
-            }
-
-            public function getEmail(): string
-            {
-                return $this->email;
-            }
-        };
         $customerSession = $this->createMock(Session::class);
-        $customerSession->method('getCustomer')->willReturn($customer);
+        $customerSession->method('getCustomerId')->willReturn($customerId);
+        $customerSession->expects($this->never())->method('getCustomer');
+
+        $request = $this->createMock(Http::class);
+        $request->method('getFullActionName')->with('/')->willReturn('customer/account/createPassword');
+        $request->method('getRequestUri')->willReturn('/customer/account/createPassword/?token=secret');
 
         return new ControllerActionPostdispatch(
             $this->agent,
             $this->helper,
-            $this->createMock(Http::class),
-            $this->createMock(IndexerInterface::class),
+            $request,
             $storeManager,
             $customerSession,
             $this->registry,
