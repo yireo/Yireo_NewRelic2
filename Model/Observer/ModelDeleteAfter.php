@@ -55,7 +55,7 @@ class ModelDeleteAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        if (!$this->helper->isEnabled()) {
+        if (!$this->helper->isEnabled() || !$this->helper->isTrackModels()) {
             return $this;
         }
 

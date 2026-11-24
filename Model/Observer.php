@@ -33,11 +33,6 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
     protected $request;
 
     /**
-     * @var \Magento\Framework\Indexer\IndexerInterface
-     */
-    protected $indexer;
-
-    /**
      * @var \Magento\Store\Model\StoreManagerInterface
      */
     protected $storeManager;
@@ -61,7 +56,6 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
      * @param \Yireo\NewRelic2\Model\Service\Agent $agent
      * @param \Yireo\NewRelic2\Helper\Data $helper
      * @param \Magento\Framework\App\RequestInterface $request
-     * @param \Magento\Framework\Indexer\IndexerInterface $indexer
      * @param \Magento\Store\Model\StoreManagerInterface $storeManager
      * @param \Magento\Customer\Model\Session $customerSession
      * @param \Magento\Framework\Registry $registry
@@ -71,7 +65,6 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
         \Yireo\NewRelic2\Model\Service\Agent $agent,
         \Yireo\NewRelic2\Helper\Data $helper,
         \Magento\Framework\App\RequestInterface $request,
-        \Magento\Framework\Indexer\IndexerInterface $indexer,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Customer\Model\Session $customerSession,
         \Magento\Framework\Registry $registry,
@@ -81,32 +74,10 @@ abstract class Observer implements \Magento\Framework\Event\ObserverInterface
         $this->agent = $agent;
         $this->helper = $helper;
         $this->request = $request;
-        $this->indexer = $indexer;
         $this->storeManager = $storeManager;
         $this->customerSession = $customerSession;
         $this->registry = $registry;
         $this->logger = $logger;
-    }
-
-    /**
-     * Return the indexer code by process ID
-     *
-     * @param $processId
-     *
-     * @return string
-     * @throws \InvalidArgumentException
-     */
-    public function getIndexerCodeByProcessId($processId)
-    {
-        $process = $this->indexer->getProcessById($processId);
-
-        if (empty($process)) {
-            throw new \InvalidArgumentException('Process ID is invalid: '.$processId);
-        }
-
-
-        $indexerCode = $process->getIndexerCode();
-        return $indexerCode;
     }
 
     /**

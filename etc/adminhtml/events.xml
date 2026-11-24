@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="adminhtml_cache_flush_all">
+        <observer name="yireo_newrelic2_adminhtml_cache_flush_all"
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushAll"/>
+    </event>
+    <event name="adminhtml_cache_flush_system">
+        <observer name="yireo_newrelic2_adminhtml_cache_flush_system"
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheFlushSystem"/>
+    </event>
+    <event name="adminhtml_cache_refresh_type">
+        <observer name="yireo_newrelic2_adminhtml_cache_refresh_type"
+                  instance="Yireo\NewRelic2\Model\Observer\AdminhtmlCacheRefreshType"/>
+    </event>
+    <event name="controller_action_predispatch">
+        <observer name="yireo_newrelic2_controller_action_predispatch"
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPredispatch"/>
+    </event>
+</config>

@@ -53,7 +53,7 @@ class AbstractBlock
      */
     public function afterToHtml(CoreAbstractBlock $subject, $result)
     {
-        if ($this->helper->isEnabled()) {
+        if ($this->helper->isEnabled() && $this->helper->isTrackBlocks()) {
             $this->agent->addCustomParameter('block::'.$subject->getNameInLayout(), 1);
         }
 

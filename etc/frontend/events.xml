@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="controller_action_predispatch">
+        <observer name="yireo_newrelic2_controller_action_predispatch"
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPredispatch"/>
+    </event>
+    <event name="controller_action_postdispatch">
+        <observer name="yireo_newrelic2_controller_action_postdispatch"
+                  instance="Yireo\NewRelic2\Model\Observer\ControllerActionPostdispatch"/>
+    </event>
+</config>
