@@ -1,6 +1,6 @@
 {
     "name": "yireo/magento2-newrelic2",
-    "license": "BSD-2-Clause",
+    "license": "OSL-3.0",
     "type": "magento2-module",
     "version": "0.3.5",
     "homepage": "https://www.yireo.com/software/magento-extensions/newrelic",
@@ -8,12 +8,6 @@
     "keywords": [
         "composer-installer",
         "magento"
-    ],
-    "authors": [
-        {
-            "name": "Jisse Reitsma (Yireo)",
-            "email": "jisse@yireo.com"
-        }
     ],
     "require": {
         "ext-pcre": "*",
@@ -27,7 +21,8 @@
     },
     "require-dev": {
         "magento/module-catalog": "^104.0",
-        "phpunit/phpunit": "^10.5"
+        "phpunit/phpunit": "^10.5",
+        "yireo/magento2-integration-test-helper": "~0.0"
     },
     "autoload": {
         "psr-4": {
