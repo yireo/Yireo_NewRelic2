@@ -1,0 +1,38 @@
+schema_version: "1.6.0"
+id: YIREO-NEWRELIC2-2026-001
+published: "2026-11-25T00:00:00Z"
+modified: "2026-11-25T00:00:00Z"
+aliases: []
+summary: Request parameters including passwords, customer PII and the license key were sent to New Relic or written to logs
+details: >
+  Before version 0.4.0, the module called newrelic_capture_params(true) on every controller request,
+  in both the frontend and the admin area. As a result, all request parameters, including customer
+  and admin login passwords and any other submitted form data, were transmitted to New Relic and
+  stored there as transaction attributes. The module also sent the full request URI and the name
+  and email address of the logged-in customer to New Relic, and added them to the Real User
+  Monitoring browser script. Anybody with access to the New Relic account could read this data.
+  In addition, every agent call was written to the debug log regardless of the debug setting,
+  including the New Relic license key, and the license key was stored unencrypted in the
+  configuration. Version 0.4.0 no longer captures request parameters, reports only the route
+  instead of the request URI, sends only the customer ID when the new "Send Customer ID" setting is
+  enabled, only logs in debug mode without the license key, and stores the license key encrypted.
+severity:
+  - type: CVSS_V3
+    score: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N"
+affected:
+  - package:
+      ecosystem: Packagist
+      name: yireo/magento2-newrelic2
+    ranges:
+      - type: ECOSYSTEM
+        events:
+          - introduced: "0"
+          - fixed: "0.4.0"
+references:
+  - type: PACKAGE
+    url: https://github.com/yireo/Yireo_NewRelic2
+database_specific:
+  cwe_ids:
+    - CWE-201
+    - CWE-532
+    - CWE-312
