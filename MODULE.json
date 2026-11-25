@@ -8,5 +8,81 @@
         "Magento_Store"
     ],
     "phpcs_severity": "9",
-    "phpstan_level": "1"
+    "phpstan_level": "1",
+    "php_versions": [
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4"
+    ],
+    "skip_magento_versions": [],
+    "skip_css_utils": false,
+    "modules": [
+        "Magento_Backend",
+        "Magento_Config",
+        "Magento_Csp",
+        "Magento_Customer",
+        "Magento_Directory",
+        "Magento_Eav",
+        "Magento_Store",
+        "Magento_Theme"
+    ],
+    "components": [],
+    "config": [
+        {
+            "path": "newrelic2/settings/enabled",
+            "label": "Settings > Enable",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/appname",
+            "label": "Settings > Application Name",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/license",
+            "label": "Settings > License Key",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/xmit",
+            "label": "Settings > Use xmit",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/track_controller",
+            "label": "Settings > Track Controllers",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/real_user_monitoring",
+            "label": "Settings > Real User Monitoring",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/send_customer_id",
+            "label": "Settings > Send Customer ID",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/track_blocks",
+            "label": "Settings > Track Blocks",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/track_models",
+            "label": "Settings > Track Models",
+            "description": ""
+        },
+        {
+            "path": "newrelic2/settings/debug",
+            "label": "Settings > Debug",
+            "description": ""
+        }
+    ],
+    "tests": {
+        "unit": 41,
+        "integration": 10,
+        "functional": 0
+    }
 }
